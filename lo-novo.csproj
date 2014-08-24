@@ -47,7 +47,6 @@
     <Compile Include="IRCStateSetup.cs" />
     <Compile Include="ITick.cs" />
     <Compile Include="Game\Lobby.cs" />
-    <Compile Include="MaybeParser.cs" />
     <Compile Include="MegaParser.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="Program.cs" />
@@ -57,6 +56,10 @@
     <Compile Include="State.cs" />
     <Compile Include="Thing.cs" />
     <Compile Include="VerbClassifier.cs" />
+    <Compile Include="IObey.cs" />
+    <Compile Include="Intention.cs" />
+    <Compile Include="PrimaryVerb.cs" />
+    <Compile Include="FalseIObey.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -70,4 +73,13 @@
   <Target Name="AfterBuild">
   </Target>
   -->
+  <ProjectExtensions>
+    <MonoDevelop>
+      <Properties>
+        <Policies>
+          <StandardHeader Text="" IncludeInNewFiles="False" />
+        </Policies>
+      </Properties>
+    </MonoDevelop>
+  </ProjectExtensions>
 </Project>

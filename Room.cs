@@ -6,13 +6,13 @@ using System.Threading.Tasks;
 
 namespace lo_novo
 {
-    public abstract class Room : ITick
+    public abstract class Room : FalseIObey, ITick
     {
         public bool Unvisited = true;
         public abstract string Name { get; }
         public abstract string Description { get; }
         public abstract string ShortDescription { get; }
-        public List<Thing> Things = new List<Thing>();
+        public List<Thing> Contents = new List<Thing>();
 
         protected MegaParser parser;
 
@@ -53,7 +53,7 @@ namespace lo_novo
             Action<string> d = ((s) => { if (toAll) ann(s); else o(s); });
 
             d(longDesc ? Description : ShortDescription);
-            foreach (var t in Things)
+            foreach (var t in Contents)
                 d(t.Description);
         }
 
@@ -67,9 +67,18 @@ namespace lo_novo
 
         protected void BuildParser()
         {
-            parser = new MegaParser(new MaybeParser[] { });
+            parser = new MegaParser();
         }
 
-        public void Parse(string s) { parser.Parse(s); }
+        public void Parse(string s)
+        { 
+            parser.Parse(s); 
+        }
+
+        public override string ToString()
+        {
+            return (State.Room == this) ? "the room" : Name;
+        }
+
     }
 }

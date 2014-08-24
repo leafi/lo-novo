@@ -9,6 +9,9 @@ namespace lo_novo
     // Who triggered this command? and other fun questions
     public static class State
     {
+        // TODO: make items that aren't the canonical source of information read-only to room scripts
+        // probs backing var + prop { get { ... } }, no set {}, manual hidden set method elsewhere
+
         public static Room Room; // note: players *can* be in different rooms. and changing this doesn't change what room the player's in!
                                  // for everything else this class is maybe sorta the canonical source of information
         public static Player Player;
@@ -16,6 +19,8 @@ namespace lo_novo
         public static List<Player> AllPlayers = new List<Player>();
         public static IIRC AllIRC;
         public static List<ITick> Ticking = new List<ITick>();
+
+        public static Random RNG = new Random();
 
         /// <summary>
         /// global game time in seconds

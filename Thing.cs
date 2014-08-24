@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace lo_novo
 {
-    public abstract class Thing : ITick
+    public abstract class Thing : FalseIObey, ITick
     {
         public abstract string Name { get; }
         public string Preposition = "a";
@@ -26,5 +26,11 @@ namespace lo_novo
         public bool CanTake = false;
 
         public void Tick() { }
+
+        public override string ToString()
+        {
+            return Preposition + " " + Name;
+        }
+       
     }
 }

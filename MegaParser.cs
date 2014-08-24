@@ -8,9 +8,7 @@ namespace lo_novo
 {
     public class MegaParser
     {
-        List<MaybeParser> Parsers = new List<MaybeParser>();
-
-        public MegaParser(IEnumerable<MaybeParser> parsers) { Parsers.AddRange(parsers); }
+        public MegaParser() { }
 
         public void Parse(string input, string defaultResponse = "I don't know how to do that.")
         {
@@ -20,9 +18,9 @@ namespace lo_novo
 
         public bool TryParse(string input)
         {
-            foreach (var p in Parsers)
+            /*foreach (var p in Parsers)
                 if (p.TryParse(input))
-                    return true;
+                    return true;*/
 
             return false;
         }

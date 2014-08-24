@@ -14,5 +14,10 @@ namespace lo_novo
         public Room Room;
 
         public void Tick() { }
+
+        public override string ToString()
+        {
+            return Name;
+        }
     }
 }

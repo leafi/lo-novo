@@ -12,8 +12,7 @@ namespace lo_novo.Communications
     {
         public class SystemIIRC : IIRC
         {
-            private ConsoleIRC circ;
-            internal SystemIIRC(ConsoleIRC circ) { this.circ = circ; }
+            internal SystemIIRC() { }
 
             public string TryRead() { throw new NotSupportedException(); }
 
@@ -55,7 +54,7 @@ namespace lo_novo.Communications
             Console.BackgroundColor = ConsoleColor.Black;
             Console.ForegroundColor = ConsoleColor.White;
             Console.Clear();
-            systemIIRC = new SystemIIRC(this);
+            systemIIRC = new SystemIIRC();
             playerIIRC = new PlayerIIRC(this);
 
             // listen for input on separate thread

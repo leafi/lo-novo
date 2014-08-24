@@ -22,44 +22,13 @@ namespace lo_novo
         Climbable = 512
     }
 
-    public enum PrimaryVerb
-    {
-        Activate,
-        Attack,
-        Push,
-        Pull,
-        Talk,
-        Take,
-        Punt,
-        Stop,
-        Open,
-        Close,
-        Climb,
-        Descend,
-        Modify,
-        Look,
-        Go,
-        DontKnow
-    }
-
-    public class Intention
-    {
-        // all the following stats fields basically have 4 possible values:
-        // 0, 1, 5 or 10. 0 is 'not at all', 1 is 'not especially', 10 is 'very much so'
-        public int Violence = 1;
-        public int Airborne = 1;
-        public int Considerate = 1;
-        public int Whimsy = 1;
-
-        public PrimaryVerb Verb;
-        public ThingType ThingType;
-        public string OriginalVerb;
-    }
 
     public static class VerbClassifier
     {
         private static void si(Intention i, PrimaryVerb pv, int air, int considerate, int violent, int whimsy)
         {
+            // all the stats fields basically have 4 possible values:
+            // 0, 1, 5 or 10. 0 is 'not at all', 1 is 'not especially', and 10 is 'very much so'.
             i.Verb = pv;
             i.Airborne = air;
             i.Considerate = considerate;
@@ -351,6 +320,7 @@ namespace lo_novo
                 case "go left":
                 case "go right":
                     si(i, PrimaryVerb.Go, 1, 1, 1, 1);
+                    break;
 
                 default:
                     i.Verb = PrimaryVerb.DontKnow;
