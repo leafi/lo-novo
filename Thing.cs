@@ -22,6 +22,12 @@ namespace lo_novo
             get { return inRoomDescription ?? "A " + Name + " lies on the floor."; }
             set { inRoomDescription = value; }
         }
+        private string furtherInRoomDescription = null;
+        public string FurtherInRoomDescription
+        {
+            get { return furtherInRoomDescription ?? InRoomDescription; }
+            set { furtherInRoomDescription = value; }
+        }
         public List<string> AliasesRegex = new List<string>();
 
         public bool Heavy = true;

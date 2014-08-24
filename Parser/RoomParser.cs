@@ -16,12 +16,15 @@ namespace lo_novo
     {
         protected Room room;
 
+        // yuck
+        string debug = "";
+
         public RoomParser(Room r) { room = r; }
 
         public void Parse(string input, string defaultResponse = "I don't know how to do that.")
         {
             if (!TryParse(input))
-                State.Player.IRC.Send("I don't know how to do that. (Expected form is 'verb (noun) ((with|at|to|...) noun).)");
+                State.Player.IRC.Send("I don't know how to do that. (Expected form is 'verb (noun) ((with|at|to|...) noun).) Try typing 'help' for ideas." + ((debug != "") ? "\n{{" + debug + "}}" : ""));
         }
 
         public bool TryParse(string input)
@@ -29,6 +32,11 @@ namespace lo_novo
             // 0. cull useless words for default parsing
             var s = input.ToLower().Trim().Replace("?", "").Replace("!", "").Replace(",", "").Replace(";", "");
             var sbits = s.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries).ToList();
+
+            debug = "";
+
+            if (s.Length == 0)
+                return true; // do nothing
 
             while (sbits.Count > 0 && new string[] { "go", "do" }.Contains(sbits[0]))
                 sbits.RemoveAt(0);
@@ -45,24 +53,30 @@ namespace lo_novo
             for (int i = sbits.Count; i > 0; i--)
                 for (int j = 0; j < sbits.Count - i + 1; j++)
                 {
+                    if (gotVerb)
+                        break;
+
                     var eats = sbits.Skip(j).Take(i);
                     intent = VerbClassifier.Verbify(string.Join(" ", eats));
                     if (intent.DefaultVerb != DefaultVerb.DontKnow)
                     {
                         eaten = eats;
                         gotVerb = true;
-                        break;
                     }
                 }
 
             Func<Intention, bool> customRule = null;
             var alreadyEatenActiveNoun = false;
             var alreadyEatenBothNouns = false;
+            bool gotVerb2 = false;
 
             // 2. Parse against any custom actions in room script, longest first
             for (int i = sbits.Count; i > 0; i--)
                 for (int j = 0; j < sbits.Count - i + 1; j++)
                 {
+                    if (gotVerb2)
+                        break;
+
                     var eats = sbits.Skip(j).Take(i);
                     var eatstring = string.Join(" ", eats);
 
@@ -73,6 +87,7 @@ namespace lo_novo
                             var matches = Regex.Matches(eatstring, rule.Item1);
 
                             gotVerb = true;
+                            gotVerb2 = true;
 
                             switch (rule.Item2)
                             {
@@ -94,6 +109,7 @@ namespace lo_novo
                             intent.VerbString = rule.Item1;
 
                             customRule = rule.Item3;
+                            break;
                         }
                     }
                 }
@@ -139,7 +155,7 @@ namespace lo_novo
             // 4. Still no verb? Give up.
             if (!gotVerb)
             {
-                State.SystemMessage("failed to find verb");
+                debug = "no verb";
                 return false;
             }
 
@@ -152,13 +168,18 @@ namespace lo_novo
             string[] activeNounBits = null;
             string[] passiveNounBits = null;
 
+            // if we only find a passive noun, should that actually be an active one?
+            var dubiousRelationship = false;
+
             if (!alreadyEatenBothNouns)
             {
                 // active vs. passive relationship is dodgy...
                 // do we need to change this to be verb-aware?
 
-                foreach (var activePassiveRelation in new string[] { "with", "at", "towards?", "to",
-                    "from", "away", "away from", "away to", "somewhere (else )?like", "down on" })
+                var found = false;
+
+                foreach (var activePassiveRelation in new string[] { "with", "towards?", "to",
+                    "from", "away", "away from" })
                 {
                     if (Regex.IsMatch(s, activePassiveRelation))
                     {
@@ -167,13 +188,35 @@ namespace lo_novo
                             activeNounBits = s.Substring(0, s.IndexOf(m.Value)).Trim().Split(' ');
                         passiveNounBits = s.Substring(s.IndexOf(m.Value) + m.Value.Length).Trim().Split(' ');
                         s = s.Replace(m.Value, "");
+                        found = true;
                         break;
+                    }
+                }
+
+                if (!found)
+                {
+                    // active-passive relationships that are a bit dubious
+                    foreach (var activePassiveRelation in new string[] { "at", "away to", "down on",
+                        "somewhere (else )?like"})
+                    {
+                        if (Regex.IsMatch(s, activePassiveRelation))
+                        {
+                            var m = Regex.Match(s, activePassiveRelation + " ");
+                            if (!alreadyEatenActiveNoun)
+                                activeNounBits = s.Substring(0, s.IndexOf(m.Value)).Trim().Split(' ');
+                            passiveNounBits = s.Substring(s.IndexOf(m.Value) + m.Value.Length).Trim().Split(' ');
+                            s = s.Replace(m.Value, "");
+                            dubiousRelationship = true;
+                            found = true;
+                            break;
+                        }
                     }
                 }
 
                 // TODO: ... passiveActiveRelation ...
 
-                if (!alreadyEatenActiveNoun)
+                // just an active verb, then?
+                if (!found)
                     activeNounBits = s.Split(' ');
             }
 
@@ -189,12 +232,14 @@ namespace lo_novo
                         for (int j = 0; j < activeNounBits.Length - i + 1; j++)
                             foreach (var n in nouns)
                             {
+                                if (intent.ActiveNoun != null)
+                                    break;
+
                                 var nmaybe = string.Join(" ", activeNounBits.Skip(j).Take(i));
                                 if (Regex.IsMatch(nmaybe, n.Item1))
                                 {
                                     intent.ActiveNoun = n.Item2;
                                     intent.ActiveNounString = Regex.Match(nmaybe, n.Item1).Value;
-                                    break;
                                 }
                             }
                 }
@@ -205,14 +250,27 @@ namespace lo_novo
                         for (int j = 0; j < passiveNounBits.Length - i + 1; j++)
                             foreach (var n in nouns)
                             {
+                                if (intent.PassiveNoun != null)
+                                    break;
+
                                 var nmaybe = string.Join(" ", passiveNounBits.Skip(j).Take(i));
                                 if (Regex.IsMatch(nmaybe, n.Item1))
                                 {
                                     intent.PassiveNoun = n.Item2;
                                     intent.PassiveNounString = Regex.Match(nmaybe, n.Item1).Value;
-                                    break;
                                 }
                             }
+                }
+
+                // if we only found a passive noun, and the active-passive relationship found was
+                //  of dubious merit to begin with, we probably actually found the active noun.
+                if (dubiousRelationship && intent.ActiveNoun == null && intent.PassiveNoun != null)
+                {
+                    intent.ActiveNoun = intent.PassiveNoun;
+                    intent.ActiveNounString = intent.PassiveNounString;
+                    intent.PassiveNoun = null;
+                    intent.PassiveNounString = "";
+                    State.Player.IRC.Send("{{dubious relationship hack}}");
                 }
 
             }
@@ -253,6 +311,7 @@ namespace lo_novo
             if (intent.DispatchOnIObey(State.Room.DefaultRoomResponses))
                 return true;
 
+            debug = "nothing handled the dispatch";
             return false;
         }
     }

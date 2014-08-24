@@ -74,10 +74,35 @@ namespace lo_novo
             if (State.Player != null && State.Player.Inventory.Contains(t))
                 return State.Player;
 
-            var r = GetRoomContainingThing(t);
-            return (r != null) ? (INoun) r : (INoun) GetPlayerContainingThing(t);
+            return ((INoun) GetRoomContainingThing(t)) ?? (INoun) GetPlayerContainingThing(t);
         }
 
+        /// <summary>
+        /// Announcement made to all players, irrespective of who triggered the command.
+        /// </summary>
+        /// <param name="output">Text to announce to all players</param>
+        public static void ann(string output)
+        {
+            State.AllIRC.Send(output);
+        }
+
+        /// <summary>
+        /// Addresses the player who triggered this command, but publicly.
+        /// </summary>
+        /// <param name="output">Text to display (publicly!) to the player who triggered this command</param>
+        public static void o(string output)
+        {
+            State.Player.IRC.Send(output);
+        }
+
+        /// <summary>
+        /// Addresses the player who triggered this command, privately.
+        /// </summary>
+        /// <param name="output">Text to whisper to the player who triggered this command</param>
+        public static void whis(string output)
+        {
+            State.Player.IRC.Send(output, true);
+        }
 
         public static void RebuildNameToPlayer()
         {

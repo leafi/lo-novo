@@ -42,6 +42,22 @@ namespace lo_novo
                     si(i, DefaultVerb.Activate, 1, 1, 1);
                     break;
 
+                case "activate":
+                    si(i, DefaultVerb.Activate, 1, 1, 1);
+                    break;
+
+                case "flick":
+                    si(i, DefaultVerb.Activate, 1, 1, 5);
+                    break;
+
+                case "flip":
+                    si(i, DefaultVerb.Activate, 1, 1, 1);
+                    break;
+
+                case "turn on":
+                    si(i, DefaultVerb.Activate, 1, 1, 1);
+                    break;
+
                 case "poke":
                     si(i, DefaultVerb.Push, 0, 1, 10);
                     break;

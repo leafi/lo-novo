@@ -11,15 +11,15 @@ namespace lo_novo
         public int Airborne = 1;
         public int Whimsy = 1;
 
-        public DefaultVerb DefaultVerb;
-        public string VerbString;
+        public DefaultVerb DefaultVerb = DefaultVerb.DontKnow;
+        public string VerbString = "";
 
-        public INoun ActiveNoun;
-        public string ActiveNounString;
-        public INoun PassiveNoun;
-        public string PassiveNounString;
+        public INoun ActiveNoun = null;
+        public string ActiveNounString = "";
+        public INoun PassiveNoun = null;
+        public string PassiveNounString = "";
 
-        public MatchCollection RegexMatches;
+        public MatchCollection RegexMatches = null;
 
         public bool DispatchOnIObey(IObey iob)
         {
