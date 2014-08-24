@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace lo_novo
 {
-    public abstract class Thing : FalseIObey, ITick
+    public abstract class Thing : FalseIObey, ITick, INoun
     {
         public abstract string Name { get; }
         public string Preposition = "a";
@@ -16,14 +16,21 @@ namespace lo_novo
             get { return description ?? "Truly, a " + Name + " remarkable only in how unremarkable it is."; }
             set { description = value; }
         }
-        private string shortDescription = null;
-        public string ShortDescription 
+        private string inRoomDescription = null;
+        public string InRoomDescription 
         { 
-            get { return shortDescription ?? Description; }
-            set { shortDescription = value; }
+            get { return inRoomDescription ?? "A " + Name + " lies on the floor."; }
+            set { inRoomDescription = value; }
         }
+        public List<string> AliasesRegex = new List<string>();
+
         public bool Heavy = true;
         public bool CanTake = false;
+
+        /// <summary>
+        /// Should we tell the user about this object when describing the room?
+        /// </summary>
+        public bool Important = true;
 
         public void Tick() { }
 

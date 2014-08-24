@@ -18,7 +18,6 @@ namespace lo_novo
         bool Descend(Intention i);
         bool Modify(Intention i);
         bool Look(Intention i);
-        bool Go(Intention i);
         bool DontKnow(Intention i);
     }
 }

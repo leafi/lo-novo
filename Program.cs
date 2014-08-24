@@ -51,10 +51,12 @@ namespace lo_novo
                 foreach (var p in State.AllPlayers)
                 {
                     State.Player = p;
-                    State.Room = p.Room;
 
                     while (true)
                     {
+                        State.Intention = null;
+                        State.Room = p.Room;
+
                         var s = p.IRC.TryRead();
                         if (s != null)
                             p.Room.Parse(s);

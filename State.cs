@@ -22,6 +22,8 @@ namespace lo_novo
 
         public static Random RNG = new Random();
 
+        public static Intention Intention = null;
+
         /// <summary>
         /// global game time in seconds
         /// </summary>
@@ -37,11 +39,52 @@ namespace lo_novo
             AllIRC.Send("SYSTEM: " + msg);
         }
 
+        public static T FindRoom<T>() where T : class
+        {
+            foreach (var p in AllPlayers)
+                if (p.Room is T)
+                    return p.Room as T;
+
+            return null;
+        }
+
+        public static IEnumerable<Room> GetOccupiedRooms()
+        {
+            return AllPlayers.ConvertAll((p) => p.Room).Distinct();
+        }
+
+        public static Room GetRoomContainingThing(Thing t)
+        {
+            if (State.Room != null && State.Room.Contents.Contains(t))
+                return State.Room;
+
+            return GetOccupiedRooms().TakeWhile((r) => r.Contents.Contains(t)).Single();
+        }
+
+        public static Player GetPlayerContainingThing(Thing t)
+        {
+            if (State.Player != null && State.Player.Inventory.Contains(t))
+                return State.Player;
+
+            return AllPlayers.TakeWhile((p) => p.Inventory.Contains(t)).Single();
+        }
+
+        public static INoun GetContainerOfThing(Thing t)
+        {
+            if (State.Player != null && State.Player.Inventory.Contains(t))
+                return State.Player;
+
+            var r = GetRoomContainingThing(t);
+            return (r != null) ? (INoun) r : (INoun) GetPlayerContainingThing(t);
+        }
+
+
         public static void RebuildNameToPlayer()
         {
             NameToPlayer.Clear();
 
             // don't let other players have an alias that's equal to someone's name
+            // TODO: do the checking at add time, not here! (or just don't check at all..)
             IEnumerable<string> allNames = AllPlayers.ConvertAll<string>((p) => p.Name);
             foreach (var p in AllPlayers)
                 foreach (var conflict in p.Aliases.Intersect(allNames))

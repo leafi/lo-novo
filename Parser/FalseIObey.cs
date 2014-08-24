@@ -20,7 +20,6 @@ namespace lo_novo
         public bool Descend(Intention i) { return false; }
         public bool Modify(Intention i) { return false; }
         public bool Look(Intention i) { return false; }
-        public bool Go(Intention i) { return false; }
         public bool DontKnow(Intention i) { return false; }
 
         #endregion

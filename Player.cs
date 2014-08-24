@@ -6,12 +6,14 @@ using System.Threading.Tasks;
 
 namespace lo_novo
 {
-    public class Player
+    public class Player : INoun
     {
         public string Name;
         public List<string> Aliases = new List<string>();
         public IIRC IRC;
         public Room Room;
+        public List<Thing> Inventory = new List<Thing>();
+        public DefaultInventoryResponses DefaultInventoryResponses;
 
         public void Tick() { }
 

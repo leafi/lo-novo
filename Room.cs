@@ -6,15 +6,22 @@ using System.Threading.Tasks;
 
 namespace lo_novo
 {
-    public abstract class Room : FalseIObey, ITick
+    public abstract class Room : FalseIObey, ITick, INoun
     {
         public bool Unvisited = true;
         public abstract string Name { get; }
         public abstract string Description { get; }
         public abstract string ShortDescription { get; }
         public List<Thing> Contents = new List<Thing>();
+        public Dictionary<Thing, string> DescriptionForContent = new Dictionary<Thing, string>();
 
-        protected MegaParser parser;
+        protected RoomParser parser;
+        internal DefaultRoomResponses DefaultRoomResponses;
+
+        public List<Tuple<string, EatsNoun, Func<Intention, bool>>> CustomRegex
+            = new List<Tuple<string, EatsNoun, Func<Intention, bool>>>();
+
+        private double timeToNextDescribeOnEntry = 0.0;
 
         public Room()
         {
@@ -54,20 +61,29 @@ namespace lo_novo
 
             d(longDesc ? Description : ShortDescription);
             foreach (var t in Contents)
-                d(t.Description);
+                if (t.Important)
+                    d(t.InRoomDescription);
         }
 
         public void Start()
         {
-            Describe(Unvisited, Unvisited);
+            if (timeToNextDescribeOnEntry <= 0.0)
+            {
+                Describe(true, Unvisited);
+                timeToNextDescribeOnEntry = 30;
+            }
             Unvisited = false;
         }
 
-        public void Tick() { }
+        public void Tick() 
+        {
+            timeToNextDescribeOnEntry -= State.DeltaTime;
+        }
 
         protected void BuildParser()
         {
-            parser = new MegaParser();
+            parser = new RoomParser(this);
+            DefaultRoomResponses = new DefaultRoomResponses(this);
         }
 
         public void Parse(string s)

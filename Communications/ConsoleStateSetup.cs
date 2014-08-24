@@ -17,6 +17,7 @@ namespace lo_novo
             p.Aliases.AddRange(new string[] { "player", "me", "protagonist", "self", "oneself", "myself" });
             p.Name = "Player";
             p.IRC = irc.PlayerIRC;
+            p.DefaultInventoryResponses = new DefaultInventoryResponses(p);
 
             State.AllPlayers.Add(p);
 

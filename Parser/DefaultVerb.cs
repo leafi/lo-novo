@@ -2,7 +2,7 @@
 
 namespace lo_novo
 {
-    public enum PrimaryVerb
+    public enum DefaultVerb
     {
         Activate,
         Attack,
@@ -18,7 +18,6 @@ namespace lo_novo
         Descend,
         Modify,
         Look,
-        Go,
         DontKnow
     }
 }
