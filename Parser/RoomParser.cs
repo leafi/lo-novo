@@ -38,7 +38,7 @@ namespace lo_novo
             if (s.Length == 0)
                 return true; // do nothing
 
-            while (sbits.Count > 0 && new string[] { "go", "do" }.Contains(sbits[0]))
+            while (sbits.Count > 0 && new string[] { "go", "do", "then" }.Contains(sbits[0]))
                 sbits.RemoveAt(0);
 
             if (sbits.Count == 0)
