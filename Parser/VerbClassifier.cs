@@ -289,11 +289,10 @@ namespace lo_novo
                     si(i, DefaultVerb.Modify, 1, 1, 1);
                     break;
 
-                case "look at":
                 case "look":
                 case "examine":
-                case "peer at":
-                case "take a closer look at":
+                case "peer":
+                case "take a closer look":
                 case "x":
                     si(i, DefaultVerb.Look, 1, 1, 1);
                     break;

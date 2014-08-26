@@ -171,6 +171,9 @@ namespace lo_novo
             // if we only find a passive noun, should that actually be an active one?
             var dubiousRelationship = false;
 
+            // !!! let us break out later if we see a noun relationship but not a noun
+            var expectNoun = false;
+
             if (!alreadyEatenBothNouns)
             {
                 // active vs. passive relationship is dodgy...
@@ -185,8 +188,8 @@ namespace lo_novo
                     {
                         var m = Regex.Match(s, activePassiveRelation + " ");
                         if (!alreadyEatenActiveNoun)
-                            activeNounBits = s.Substring(0, s.IndexOf(m.Value)).Trim().Split(' ');
-                        passiveNounBits = s.Substring(s.IndexOf(m.Value) + m.Value.Length).Trim().Split(' ');
+                            activeNounBits = s.Substring(0, s.IndexOf(m.Value)).Trim().Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+                        passiveNounBits = s.Substring(s.IndexOf(m.Value) + m.Value.Length).Trim().Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
                         s = s.Replace(m.Value, "");
                         found = true;
                         break;
@@ -203,8 +206,8 @@ namespace lo_novo
                         {
                             var m = Regex.Match(s, activePassiveRelation + " ");
                             if (!alreadyEatenActiveNoun)
-                                activeNounBits = s.Substring(0, s.IndexOf(m.Value)).Trim().Split(' ');
-                            passiveNounBits = s.Substring(s.IndexOf(m.Value) + m.Value.Length).Trim().Split(' ');
+                                activeNounBits = s.Substring(0, s.IndexOf(m.Value)).Trim().Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+                            passiveNounBits = s.Substring(s.IndexOf(m.Value) + m.Value.Length).Trim().Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
                             s = s.Replace(m.Value, "");
                             dubiousRelationship = true;
                             found = true;
@@ -218,6 +221,9 @@ namespace lo_novo
                 // just an active verb, then?
                 if (!found)
                     activeNounBits = s.Split(' ');
+
+                if (found)
+                    expectNoun = true;
             }
 
 
@@ -226,7 +232,7 @@ namespace lo_novo
             {
                 var nouns = NounLibrary.Build();
 
-                if (!alreadyEatenActiveNoun && activeNounBits != null)
+                if (!alreadyEatenActiveNoun && activeNounBits != null && activeNounBits.Length > 0)
                 {
                     for (int i = activeNounBits.Length; i > 0; i--)
                         for (int j = 0; j < activeNounBits.Length - i + 1; j++)
@@ -242,9 +248,15 @@ namespace lo_novo
                                     intent.ActiveNounString = Regex.Match(nmaybe, n.Item1).Value;
                                 }
                             }
+
+                    if (expectNoun && intent.ActiveNoun == null)
+                    {
+                        State.o("I don't know what '" + string.Join(" ", activeNounBits) + "' means. [a]");
+                        return true;
+                    }
                 }
 
-                if (passiveNounBits != null)
+                if (passiveNounBits != null && passiveNounBits.Length > 0)
                 {
                     for (int i = passiveNounBits.Length; i > 0; i--)
                         for (int j = 0; j < passiveNounBits.Length - i + 1; j++)
@@ -260,6 +272,12 @@ namespace lo_novo
                                     intent.PassiveNounString = Regex.Match(nmaybe, n.Item1).Value;
                                 }
                             }
+
+                    if (expectNoun && intent.PassiveNoun == null)
+                    {
+                        State.o("I don't know what '" + string.Join(" ", passiveNounBits) + "' means. [p]");
+                        return true;
+                    }
                 }
 
                 // if we only found a passive noun, and the active-passive relationship found was
