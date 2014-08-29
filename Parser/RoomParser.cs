@@ -47,23 +47,21 @@ namespace lo_novo
             // 1. feed into the default verb parser, to try and get hints about intention
             // longest possible first!
             Intention intent = null;
-            IEnumerable<string> eaten = null;
+            string eaten = null;
             bool gotVerb = false;
 
-            for (int i = sbits.Count; i > 0; i--)
-                for (int j = 0; j < sbits.Count - i + 1; j++)
-                {
-                    if (gotVerb)
-                        break;
+            foreach (var eats in sbits.JoinedAndSplit())
+            {
+                if (gotVerb)
+                    break;
 
-                    var eats = sbits.Skip(j).Take(i);
-                    intent = VerbClassifier.Verbify(string.Join(" ", eats));
-                    if (intent.DefaultVerb != DefaultVerb.DontKnow)
-                    {
-                        eaten = eats;
-                        gotVerb = true;
-                    }
+                intent = VerbClassifier.Verbify(eats);
+                if (intent.DefaultVerb != DefaultVerb.DontKnow)
+                {
+                    eaten = eats;
+                    gotVerb = true;
                 }
+            }
 
             Func<Intention, bool> customRule = null;
             var alreadyEatenActiveNoun = false;
@@ -71,51 +69,47 @@ namespace lo_novo
             bool gotVerb2 = false;
 
             // 2. Parse against any custom actions in room script, longest first
-            for (int i = sbits.Count; i > 0; i--)
-                for (int j = 0; j < sbits.Count - i + 1; j++)
+            foreach (var eatstring in sbits.JoinedAndSplit())
+            {
+                if (gotVerb2)
+                    break;
+
+                foreach (var rule in room.CustomRegex)
                 {
-                    if (gotVerb2)
-                        break;
+                    if (rule.Item1 != rule.Item1.ToLowerInvariant())
+                        State.SystemMessage("warning - custom rule " + rule.Item1 + " isn't equal to (rule).ToLowerInvariant(). user input is always matched in lowercase");
 
-                    var eats = sbits.Skip(j).Take(i);
-                    var eatstring = string.Join(" ", eats);
-
-                    foreach (var rule in room.CustomRegex)
+                    if (Regex.IsMatch(eatstring, rule.Item1))
                     {
-                        if (rule.Item1 != rule.Item1.ToLowerInvariant())
-                            State.SystemMessage("warning - custom rule " + rule.Item1 + " isn't equal to (rule).ToLowerInvariant(). user input is always matched in lowercase");
+                        var matches = Regex.Matches(eatstring, rule.Item1);
 
-                        if (Regex.IsMatch(eatstring, rule.Item1))
+                        gotVerb = true;
+                        gotVerb2 = true;
+
+                        switch (rule.Item2)
                         {
-                            var matches = Regex.Matches(eatstring, rule.Item1);
+                            case EatsNoun.Zero:
+                                break;
 
-                            gotVerb = true;
-                            gotVerb2 = true;
+                            case EatsNoun.One:
+                                alreadyEatenActiveNoun = true;
+                                break;
 
-                            switch (rule.Item2)
-                            {
-                                case EatsNoun.Zero:
-                                    break;
-
-                                case EatsNoun.One:
-                                    alreadyEatenActiveNoun = true;
-                                    break;
-
-                                case EatsNoun.Two:
-                                    alreadyEatenActiveNoun = true;
-                                    alreadyEatenBothNouns = true;
-                                    break;
-                            }
-
-                            intent.RegexMatches = matches;
-                            intent.DefaultVerb = DefaultVerb.DontKnow;
-                            intent.VerbString = rule.Item1;
-
-                            customRule = rule.Item3;
-                            break;
+                            case EatsNoun.Two:
+                                alreadyEatenActiveNoun = true;
+                                alreadyEatenBothNouns = true;
+                                break;
                         }
+
+                        intent.RegexMatches = matches;
+                        intent.DefaultVerb = DefaultVerb.DontKnow;
+                        intent.VerbString = rule.Item1;
+
+                        customRule = rule.Item3;
+                        break;
                     }
                 }
+            }
 
 
             // 3. If no verb yet, try and choose one from system keywords
@@ -198,8 +192,7 @@ namespace lo_novo
 
             // 5. We should have at least a verb now. Discard verb from search *STRING*.
             // TODO: err this replaces all instances
-            s = s.Replace(string.Join(" ", eaten), "").Trim();
-
+            s = string.Join(" ", sbits).Replace(eaten, "").Trim();
 
             // 6. are we searching for the active or the passive noun?
             string[] activeNounBits = null;
@@ -282,27 +275,24 @@ namespace lo_novo
                 {
                     var done = false;
 
-                    for (int i = activeNounBits.Length; i > 0; i--)
-                        for (int j = 0; j < activeNounBits.Length - i + 1; j++)
-                        {
-                            if (done)
-                                break;
+                    foreach (var word in activeNounBits.JoinedAndSplit())
+                    {
+                        if (done)
+                            break;
 
-                            var word = string.Join(" ", activeNounBits.Skip(j).Take(i));
+                        var ws = new List<string>();
+                        ws.Add(word);
 
-                            var ws = new List<string>();
-                            ws.Add(word);
+                        if (word.EndsWith("s"))
+                            ws.Add(word.Substring(0, word.Length - 1));
 
-                            if (word.EndsWith("s"))
-                                ws.Add(word.Substring(0, word.Length - 1));
-
-                            foreach (var w in ws)
-                                if (WordDictionary.Dict.ContainsKey(w))
-                                {
-                                    State.o(WordDictionary.Dict[w]);
-                                    done = true;
-                                }
-                        }
+                        foreach (var w in ws)
+                            if (WordDictionary.Dict.ContainsKey(w))
+                            {
+                                State.o(WordDictionary.Dict[w]);
+                                done = true;
+                            }
+                    }
 
                     /*if (!done)
                         State.o("It's complicated. But you'll figure it out.");*/
@@ -323,48 +313,44 @@ namespace lo_novo
 
                 if (!alreadyEatenActiveNoun && activeNounBits != null && activeNounBits.Length > 0)
                 {
-                    for (int i = activeNounBits.Length; i > 0; i--)
-                        for (int j = 0; j < activeNounBits.Length - i + 1; j++)
-                            foreach (var n in nouns)
-                            {
-                                if (intent.ActiveNoun != null)
-                                    break;
+                    foreach (var nmaybe in activeNounBits.JoinedAndSplit())
+                        foreach (var n in nouns)
+                        {
+                            if (intent.ActiveNoun != null)
+                                break;
 
-                                var nmaybe = string.Join(" ", activeNounBits.Skip(j).Take(i));
-                                if (Regex.IsMatch(nmaybe, n.Item1))
-                                {
-                                    intent.ActiveNoun = n.Item2;
-                                    intent.ActiveNounString = Regex.Match(nmaybe, n.Item1).Value;
-                                }
+                            if (Regex.IsMatch(nmaybe, n.Item1))
+                            {
+                                intent.ActiveNoun = n.Item2;
+                                intent.ActiveNounString = Regex.Match(nmaybe, n.Item1).Value;
                             }
+                        }
 
                     if (expectNoun && intent.ActiveNoun == null)
                     {
-                        State.o("I don't know what '" + string.Join(" ", activeNounBits) + "' means. [a]");
+                        State.o("I don't know which noun '" + string.Join(" ", activeNounBits) + "' means. [a]");
                         return true;
                     }
                 }
 
                 if (passiveNounBits != null && passiveNounBits.Length > 0)
                 {
-                    for (int i = passiveNounBits.Length; i > 0; i--)
-                        for (int j = 0; j < passiveNounBits.Length - i + 1; j++)
-                            foreach (var n in nouns)
-                            {
-                                if (intent.PassiveNoun != null)
-                                    break;
+                    foreach (var nmaybe in passiveNounBits.JoinedAndSplit())
+                        foreach (var n in nouns)
+                        {
+                            if (intent.PassiveNoun != null)
+                                break;
 
-                                var nmaybe = string.Join(" ", passiveNounBits.Skip(j).Take(i));
-                                if (Regex.IsMatch(nmaybe, n.Item1))
-                                {
-                                    intent.PassiveNoun = n.Item2;
-                                    intent.PassiveNounString = Regex.Match(nmaybe, n.Item1).Value;
-                                }
+                            if (Regex.IsMatch(nmaybe, n.Item1))
+                            {
+                                intent.PassiveNoun = n.Item2;
+                                intent.PassiveNounString = Regex.Match(nmaybe, n.Item1).Value;
                             }
+                        }
 
                     if (expectNoun && intent.PassiveNoun == null)
                     {
-                        State.o("I don't know what '" + string.Join(" ", passiveNounBits) + "' means. [p]");
+                        State.o("I don't know which noun '" + string.Join(" ", passiveNounBits) + "' means. [p]");
                         return true;
                     }
                 }
