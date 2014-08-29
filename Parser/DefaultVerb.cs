@@ -18,7 +18,8 @@ namespace lo_novo
         Descend,
         Modify,
         Look,
-        DontKnow
+        DontKnow,
+        SystemDictionary
     }
 }
 

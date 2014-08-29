@@ -297,6 +297,15 @@ namespace lo_novo
                     si(i, DefaultVerb.Look, 1, 1, 1);
                     break;
 
+                case "what":
+                case "what is":
+                case "what is a":
+                case "define a":
+                case "define the":
+                case "define":
+                    si(i, DefaultVerb.SystemDictionary, 1, 1, 1);
+                    break;
+
                 default:
                     i.DefaultVerb = DefaultVerb.DontKnow;
                     break;

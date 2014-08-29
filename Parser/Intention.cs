@@ -21,6 +21,11 @@ namespace lo_novo
 
         public MatchCollection RegexMatches = null;
 
+        /// <summary>
+        /// Is this about nothing/the whole room, rather than a specific item or person?
+        /// </summary>
+        public bool WholeRoom { get { return ActiveNoun == null || ActiveNoun == State.Room; } }
+
         public bool DispatchOnIObey(IObey iob)
         {
             switch (DefaultVerb)

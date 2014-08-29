@@ -82,6 +82,9 @@ namespace lo_novo
 
                     foreach (var rule in room.CustomRegex)
                     {
+                        if (rule.Item1 != rule.Item1.ToLowerInvariant())
+                            State.SystemMessage("warning - custom rule " + rule.Item1 + " isn't equal to (rule).ToLowerInvariant(). user input is always matched in lowercase");
+
                         if (Regex.IsMatch(eatstring, rule.Item1))
                         {
                             var matches = Regex.Matches(eatstring, rule.Item1);
@@ -113,7 +116,7 @@ namespace lo_novo
                         }
                     }
                 }
-                    
+
 
             // 3. If no verb yet, try and choose one from system keywords
             if (!gotVerb)
@@ -141,6 +144,40 @@ namespace lo_novo
                         case "exit":
                         case "leave":
                             State.SystemMessage("Player management is out-of-band. Use !help to see relevant commands.");
+                            return true;
+
+                        case "xtravel":
+                        case "xteleport":
+                            State.SystemMessage("Teleporting...");
+
+                            Type roomType = null;
+
+                            for (int k = i + 1; k < sbits.Count; k++)
+                            {
+                                foreach (var pre in new string[] { "lo_novo.", "lo_novo.Game.", "" })
+                                {
+                                    roomType = Type.GetType(pre + sbits[k], false, true);
+                                    if (roomType != null)
+                                        break;
+                                }
+                                if (roomType != null)
+                                    break;
+                            }
+
+                            if (roomType != null)
+                            {
+                                try
+                                {
+                                    State.Travel(roomType);
+                                }
+                                catch (Exception e)
+                                {
+                                    State.SystemMessage("Teleport failed: " + e.Message);
+                                }
+                            }
+                            else
+                                State.SystemMessage("Failed to teleport " + State.Player.Name + ": couldn't find Type.");
+
                             return true;
 
                         default:
@@ -220,10 +257,62 @@ namespace lo_novo
 
                 // just an active verb, then?
                 if (!found)
-                    activeNounBits = s.Split(' ');
+                    activeNounBits = s.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
 
                 if (found)
                     expectNoun = true;
+
+                // XXX: we should err on the side of expecting a noun, maybe?
+                // expectNoun is weird anyway. If there are no words, we try to dispatch regardless.
+                // If there are words we can't parse as nouns though, we'll complain.
+                if (customRule == null)
+                    expectNoun = true;
+
+            }
+
+            // 6.5. escape hatch for dictionary
+            if (intent.DefaultVerb == DefaultVerb.SystemDictionary)
+            {
+                if (activeNounBits == null || activeNounBits.Length < 1)
+                {
+                    State.o("What term would you like me to define?");
+                    return true;
+                }
+                else
+                {
+                    var done = false;
+
+                    for (int i = activeNounBits.Length; i > 0; i--)
+                        for (int j = 0; j < activeNounBits.Length - i + 1; j++)
+                        {
+                            if (done)
+                                break;
+
+                            var word = string.Join(" ", activeNounBits.Skip(j).Take(i));
+
+                            var ws = new List<string>();
+                            ws.Add(word);
+
+                            if (word.EndsWith("s"))
+                                ws.Add(word.Substring(0, word.Length - 1));
+
+                            foreach (var w in ws)
+                                if (WordDictionary.Dict.ContainsKey(w))
+                                {
+                                    State.o(WordDictionary.Dict[w]);
+                                    done = true;
+                                }
+                        }
+
+                    /*if (!done)
+                        State.o("It's complicated. But you'll figure it out.");*/
+
+                    if (done)
+                        return true;
+
+                    // demote to look; maybe room has something specific for this.
+                    intent.DefaultVerb = DefaultVerb.Look;
+                }
             }
 
 
@@ -304,9 +393,10 @@ namespace lo_novo
             //  (b) Room script
             //  (c) Active noun script
             //  (d) Default room script if no active noun/noun is in room
-            //  (e) Default inventory item script if active noun in inventory
-            //  (f) Default room script regardless of the nouns
-            //  (g) Give up.
+            //  (e) Specific item script if active noun is in room
+            //  (f) Default inventory item script if active noun in inventory
+            //  (g) Default room script regardless of the nouns
+            //  (h) Give up.
 
             if (customRule != null)
                 if (customRule(intent))
@@ -320,6 +410,10 @@ namespace lo_novo
 
             if ((intent.ActiveNoun == null || State.Room.Contents.Contains(intent.ActiveNoun as Thing))
                 && intent.DispatchOnIObey(State.Room.DefaultRoomResponses))
+                return true;
+
+            if (intent.ActiveNoun != null && State.Room.Contents.Contains(intent.ActiveNoun as Thing)
+                && intent.DispatchOnIObey(intent.ActiveNoun as Thing))
                 return true;
 
             if (intent.ActiveNoun != null && State.Player.Inventory.Contains(intent.ActiveNoun as Thing)

@@ -12,9 +12,8 @@ namespace lo_novo
         // TODO: make items that aren't the canonical source of information read-only to room scripts
         // probs backing var + prop { get { ... } }, no set {}, manual hidden set method elsewhere
 
-        public static Room Room; // note: players *can* be in different rooms. and changing this doesn't change what room the player's in!
-                                 // for everything else this class is maybe sorta the canonical source of information
         public static Player Player;
+        public static Room Room { get { return Player.Room; } }
         public static Dictionary<string, Player> NameToPlayer = new Dictionary<string, Player>();
         public static List<Player> AllPlayers = new List<Player>();
         public static IIRC AllIRC;
@@ -22,7 +21,7 @@ namespace lo_novo
 
         public static Random RNG = new Random();
 
-        public static Intention Intention = null;
+        public static Dictionary<Type, Room> AllRooms = new Dictionary<Type, Room>();
 
         /// <summary>
         /// global game time in seconds
@@ -34,18 +33,14 @@ namespace lo_novo
         /// </summary>
         public static double DeltaTime;
 
+        public static string Choose(IEnumerable<string> choices)
+        {
+            return choices.ElementAt(RNG.Next(choices.Count()));
+        }
+
         public static void SystemMessage(string msg)
         {
             AllIRC.Send("SYSTEM: " + msg);
-        }
-
-        public static T FindRoom<T>() where T : class
-        {
-            foreach (var p in AllPlayers)
-                if (p.Room is T)
-                    return p.Room as T;
-
-            return null;
         }
 
         public static IEnumerable<Room> GetOccupiedRooms()
@@ -128,6 +123,26 @@ namespace lo_novo
                         p.Aliases.Remove(s);
                     }
                         
+        }
+
+        public static void Travel(Room destination)
+        {
+            var prev = Player.Room;
+            if (prev != null)
+                prev.Leave();
+
+            Player.Room = destination;
+            if (destination != null)
+                destination.Enter();
+        }
+
+        public static void Travel(Type roomClass)
+        {
+            // hmm...
+            if (!AllRooms.ContainsKey(roomClass))
+                AllRooms.Add(roomClass, (Room) roomClass.GetConstructor(new Type[] { }).Invoke(null));
+
+            Travel(AllRooms[roomClass]);
         }
     }
 }

@@ -13,7 +13,7 @@ namespace lo_novo
 
         public override bool Look(Intention i)
         {
-            if (i.ActiveNoun == null || i.ActiveNoun == room)
+            if (i.WholeRoom)
             {
                 room.Describe(false, true);
                 if (i.PassiveNoun != null)

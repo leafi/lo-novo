@@ -19,11 +19,11 @@ namespace lo_novo
             State.SystemMessage("Welcome, one and all. Let's start the game.\n");
 
             // move all players to init room
-            var r = new Lobby();
-            State.Room = r;
             foreach (var p in State.AllPlayers)
-                p.Room = r;
-            r.Start();
+            {
+                State.Player = p;
+                State.Travel(typeof(Lobby));
+            }
 
 
             var toTick = new List<ITick>();
@@ -54,9 +54,6 @@ namespace lo_novo
 
                     while (true)
                     {
-                        State.Intention = null;
-                        State.Room = p.Room;
-
                         var s = p.IRC.TryRead();
                         if (s != null)
                             p.Room.Parse(s);
@@ -65,7 +62,7 @@ namespace lo_novo
                     }
                 }
 
-                Thread.Sleep(100);
+                Thread.Sleep(10);
             }
             
 

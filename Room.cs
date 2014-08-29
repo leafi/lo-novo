@@ -23,6 +23,14 @@ namespace lo_novo
 
         private double timeToNextDescribeOnEntry = 0.0;
 
+        public IEnumerable<Player> Players
+        {
+            get
+            {
+                return State.AllPlayers.Select<Player, Player>((p) => p.Room == this ? p : null);
+            }
+        }
+
         public Room()
         {
             BuildParser();
@@ -59,21 +67,34 @@ namespace lo_novo
         {
             Action<string> d = ((s) => { if (toAll) ann(s); else o(s); });
 
+            d(Name.ToUpper());
             d(longDesc ? Description : ShortDescription);
             foreach (var t in Contents)
                 if (t.Important)
                     d(t.InRoomDescription);
         }
 
-        public void Start()
+        public void Enter()
         {
+            if (!State.Ticking.Contains(this))
+                State.Ticking.Add(this);
+
             if (timeToNextDescribeOnEntry <= 0.0)
             {
                 Describe(true, Unvisited);
-                timeToNextDescribeOnEntry = 30;
             }
+            else
+                State.o("-> " + Name);
+
+            timeToNextDescribeOnEntry = 30;
             Unvisited = false;
         }
+
+        public void Leave() 
+        {
+            if (!Players.Any() && State.Ticking.Contains(this))
+                State.Ticking.Remove(this);
+        } 
 
         public void Tick() 
         {

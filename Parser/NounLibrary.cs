@@ -63,7 +63,7 @@ namespace lo_novo
             tu("room", State.Room);
 
             // ugh... fix up regexp :x
-            return list.ConvertAll((t) => Tuple.Create("^" + t.Item1 + "$", t.Item2));
+            return list.ConvertAll((t) => Tuple.Create("^" + t.Item1.ToLowerInvariant() + "$", t.Item2));
         }
     }
 }
