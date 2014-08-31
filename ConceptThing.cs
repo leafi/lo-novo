@@ -18,14 +18,14 @@ namespace lo_novo
 
         public override string Name { get { return name; } }
 
-        public ConceptThing(string name, string description = null, string inRoomDescription = null,
+        public ConceptThing(string name, //string description = null, string inRoomDescription = null,
             string furtherInRoomDescription = null, string activate = null, string attack = null,
             string pushPull = null, string talk = null, string take = null, string punt = null,
             string stop = null, string openClose = null, string climbDescend = null, string modify = null)
         {
             this.name = name;
-            this.Description = description;
-            this.InRoomDescription = inRoomDescription;
+            //this.Description = description;
+            //this.InRoomDescription = inRoomDescription;
             this.FurtherInRoomDescription = furtherInRoomDescription;
             this.activate = activate;
             this.attack = attack;
@@ -37,13 +37,17 @@ namespace lo_novo
             this.openClose = openClose;
             this.climbDescend = climbDescend;
             this.modify = modify;
+
+            this.Important = false;
+            this.CanTake = false;
+            this.Heavy = true;
         }
 
         private bool magic(string outputOrNull)
         {
             if (outputOrNull != null)
             {
-                State.o(activate);
+                State.o(outputOrNull);
                 return true;
             }
             return false;

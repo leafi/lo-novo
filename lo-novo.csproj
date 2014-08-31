@@ -69,6 +69,7 @@
     <Compile Include="WordDictionary.cs" />
     <Compile Include="ConceptThing.cs" />
     <Compile Include="Extensions.cs" />
+    <Compile Include="SingleOrMultiPlayer.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

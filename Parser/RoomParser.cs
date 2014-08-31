@@ -211,7 +211,7 @@ namespace lo_novo
 
                 var found = false;
 
-                foreach (var activePassiveRelation in new string[] { "with", "towards?", "to",
+                foreach (var activePassiveRelation in new string[] { "with", "towards?",
                     "from", "away", "away from" })
                 {
                     if (Regex.IsMatch(s, activePassiveRelation))
@@ -230,7 +230,7 @@ namespace lo_novo
                 {
                     // active-passive relationships that are a bit dubious
                     foreach (var activePassiveRelation in new string[] { "at", "away to", "down on",
-                        "somewhere (else )?like"})
+                        "somewhere (else )?like", "to"})
                     {
                         if (Regex.IsMatch(s, activePassiveRelation))
                         {
@@ -409,7 +409,7 @@ namespace lo_novo
             if (intent.DispatchOnIObey(State.Room.DefaultRoomResponses))
                 return true;
 
-            debug = "nothing handled the dispatch";
+            debug = "i understood you, but nothing accepted the dispatch";
             return false;
         }
     }

@@ -21,7 +21,7 @@ namespace lo_novo
 
         public static Random RNG = new Random();
 
-        public static Dictionary<Type, Room> AllRooms = new Dictionary<Type, Room>();
+        public static Dictionary<Type, Room> AllSharedRooms = new Dictionary<Type, Room>();
 
         /// <summary>
         /// global game time in seconds
@@ -136,13 +136,26 @@ namespace lo_novo
                 destination.Enter();
         }
 
-        public static void Travel(Type roomClass)
+        public static void Travel(Type roomClass, bool instanced = false)
         {
             // hmm...
-            if (!AllRooms.ContainsKey(roomClass))
-                AllRooms.Add(roomClass, (Room) roomClass.GetConstructor(new Type[] { }).Invoke(null));
+            if (!instanced)
+            {
+                if (!AllSharedRooms.ContainsKey(roomClass))
+                    AllSharedRooms.Add(roomClass, (Room) roomClass.GetConstructor(new Type[] { }).Invoke(null));
 
-            Travel(AllRooms[roomClass]);
+                if (AllSharedRooms[roomClass].GetType()
+                    .GetCustomAttributes(typeof(SinglePlayerAttribute), true).FirstOrDefault() != null)
+                {
+                    State.SystemMessage(roomClass.Name + " isn't designed for multiple players. Change instanced arg in Travel() to true.");
+                }
+               
+                Travel(AllSharedRooms[roomClass]);
+            }
+            else
+            {
+                Travel((Room) roomClass.GetConstructor(new Type[] { }).Invoke(null));
+            }
         }
     }
 }
