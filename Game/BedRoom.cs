@@ -31,7 +31,7 @@ Your room is a mess, but the ancient and terrible dance of the universe continue
 
         public BedRoom()
         {
-            Contents.Add(new ConceptThing("Mess",
+            Contents.Add(new ConceptThing("mess",
                 furtherInRoomDescription: "The mess is sprawling. You casually wonder how long it'll take before"
                 + " it realises its own power and moves to take over the entire universe and everything in it."
                 + "\nFrankly, it looks like it's about halfway there.",
@@ -46,6 +46,26 @@ You apply pressure to a close area, but it simply resumes its original shapeless
                 climbDescend: @"No point scaling the thing without proper preparation.
 You'd need a week's rations, proper climbing equipment and a guide native to the area, at the very least."
             ));
+            Find("mess").AliasesRegex.AddRange(new string[] { "messy room", "sprawling mess", "room mess" });
+
+            Contents.Add(new ConceptThing("dusty glaze coat", "Something you made up.",
+                take: "Ha-ha. It is to laugh. The coat rejects your attempt as facetious."));
+            Find("dusty glaze coat").AddAliases("coat", "dusty coat", "glazed coat");
+
+            Contents.Add(new ConceptThing("light",
+                furtherInRoomDescription: "Floating through the viewshield, it's warm and comforting. A real ray of sunshine.",
+                activate: "It is active on many parts of the spectrum, without your help.",
+                attack: "It passes through you, or the other way round.",
+                pushPull: "It passes through you, or, perhaps, the other way around.",
+                talk: "It says warmth, and colour, and life, and that it'll be here long after you're gone, though not *here* here.",
+                take: "You put some in your pocket. But checking just a single second later - it's gone! Where did it go?!",
+                punt: "The sun throws light on you, not the other way around.",
+                stop: "No, it's yellow.",
+                climbDescend: "Particles of dust appear to be climbing the rays. You'll have a harder time."));
+            Find("light").AddAliases("warm light", "(red )?sun ?light", "sunshine");
+
+
+
 
         }
     }

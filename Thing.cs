@@ -38,6 +38,11 @@ namespace lo_novo
         /// </summary>
         public bool Important = true;
 
+        public void AddAliases(params string[] aliasesRegex)
+        {
+            AliasesRegex.AddRange(aliasesRegex);
+        }
+
         public void Tick() { }
 
         public override string ToString()

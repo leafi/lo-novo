@@ -23,6 +23,22 @@ namespace lo_novo
 
         private double timeToNextDescribeOnEntry = 0.0;
 
+        public Thing Find(string name)
+        {
+            return Contents.Select<Thing, Thing>((t) => t.Name == name ? t : null).Single();
+        }
+
+        public T Find<T>() where T : Thing
+        {
+            return Contents.Select<Thing, T>((t) => typeof(T) == t.GetType() ? (T) t : null).Single();
+        }
+
+        public T Find<T>(string name) where T : Thing
+        {
+            return Contents.Select<Thing, T>((t) => typeof(T) == t.GetType() ? (T) t : null)
+                .Select<T, T>((p) => p.Name == name ? p : null).Single();
+        }
+
         public IEnumerable<Player> Players
         {
             get
