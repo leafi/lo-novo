@@ -100,7 +100,7 @@ namespace lo_novo
             {
                 Describe(true, Unvisited);
             }
-            else
+            else if (!State.TravellingAll)
                 State.o("-> " + Name);
 
             timeToNextDescribeOnEntry = 30;

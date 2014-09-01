@@ -33,6 +33,8 @@ namespace lo_novo
         /// </summary>
         public static double DeltaTime;
 
+        internal static bool TravellingAll = false;
+
         public static string Choose(IEnumerable<string> choices)
         {
             return choices.ElementAt(RNG.Next(choices.Count()));
@@ -156,6 +158,32 @@ namespace lo_novo
             {
                 Travel((Room) roomClass.GetConstructor(new Type[] { }).Invoke(null));
             }
+        }
+
+        public static void TravelAll(Room destination)
+        {
+            var old = State.Player;
+            State.TravellingAll = true;
+            foreach (var p in AllPlayers)
+            {
+                State.Player = p;
+                Travel(destination);
+            }
+            State.TravellingAll = false;
+            State.Player = old;
+        }
+
+        public static void TravelAll(Type roomClass, bool instanced = false)
+        {
+            var old = State.Player;
+            State.TravellingAll = true;
+            foreach (var p in AllPlayers)
+            {
+                State.Player = p;
+                Travel(roomClass, instanced);
+            }
+            State.TravellingAll = false;
+            State.Player = old;
         }
     }
 }

@@ -315,10 +315,12 @@ namespace lo_novo
             if (!alreadyEatenBothNouns)
             {
                 var nouns = NounLibrary.Build();
+                string wordDictHack = null;
 
                 if (!alreadyEatenActiveNoun && activeNounBits != null && activeNounBits.Length > 0)
                 {
                     foreach (var nmaybe in activeNounBits.JoinedAndSplit())
+                    {
                         foreach (var n in nouns)
                         {
                             if (intent.ActiveNoun != null)
@@ -330,6 +332,17 @@ namespace lo_novo
                                 intent.ActiveNounString = Regex.Match(nmaybe, n.Item1).Value;
                             }
                         }
+                        if (wordDictHack == null && WordDictionary.Dict.ContainsKey(nmaybe))
+                            wordDictHack = nmaybe;
+                    }
+
+                    // word dict hack! (look -> define)
+                    if (intent.ActiveNoun == null && intent.DefaultVerb == DefaultVerb.Look && wordDictHack != null)
+                    {
+                        State.o("{{look -> 'define " + wordDictHack + "'}}");
+                        State.o(WordDictionary.Dict[wordDictHack]);
+                        return true;
+                    }
 
                     if (expectNoun && intent.ActiveNoun == null)
                     {
