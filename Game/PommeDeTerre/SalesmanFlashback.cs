@@ -39,7 +39,11 @@ namespace lo_novo
         {
             get
             {
-                throw new NotImplementedException();
+                return (Unvisited ? @"You land in grainy black 'n' white, in cycles gone by, in the past.
+Beady-eyed, sweaty men with little hair glance at you, but the eye-fucking by RUSTY hisself shows you that you're exactly one man's meal today.
+As for the EMPORIUM itself, " : "Regarding the EMPORIUM, ") + @" it's some big-ass SPACE SHOWROOM with SHINY SHIPS and LESS SHINY SHIPS dotted around.
+PROTO-MARBLE is what the floor is, the ceiling's too far up to make out against the SPOTLIGHTS on the SHINY SHIPS, and the air is stale like last year's Toblerone.
+So many SALESMEN, yet you're the only one there. At risk of belabouring the point, they're sharks, and you're meat.";
             }
         }
 
