@@ -375,8 +375,13 @@ namespace lo_novo
             //  just want to influence Intention stats)
 
 
+            // 7.999. Let Room modify the Intention now, if it wishes to.
+            intent = State.Room.ParsePostprocess(intent, input);
+
+
             // 8. Dispatch actions. Order:
             //  (a) Custom action if any
+            //  (1.1854138) Room's EarlyDispatch function
             //  (b) Room script
             //  (c) Active noun script
             //  (d) Default room script if no active noun/noun is in room
@@ -388,6 +393,9 @@ namespace lo_novo
             if (customRule != null)
                 if (customRule(intent))
                     return true;
+
+            if (State.Room.EarlyDispatch(intent))
+                return true;
 
             if (intent.DispatchOnIObey(State.Room))
                 return true;

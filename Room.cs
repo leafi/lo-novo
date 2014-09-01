@@ -129,6 +129,27 @@ namespace lo_novo
             parser.Parse(s); 
         }
 
+        /// <summary>
+        /// Postprocessing function on parse result, letting the room script tweak the Intention if it wishes.
+        /// </summary>
+        /// <returns>same or new Intention, possibly with changed fields</returns>
+        /// <param name="intent">Intention before post-processing</param>
+        /// <param name="s">original string before parsing</param>
+        public virtual Intention ParsePostprocess(Intention intent, string s) 
+        {
+            return intent;
+        }
+
+        /// <summary>
+        /// Chance for a room to handle a command before traditional dispatching.
+        /// </summary>
+        /// <param name="i">the Intention about to undergo traditional dispatch</param>
+        /// <returns><c>true</c> if dispatch was handled in this function, else <c>false</c>.</returns>
+        public virtual bool EarlyDispatch(Intention i)
+        {
+            return false;
+        }
+
         public override string ToString()
         {
             return (State.Room == this) ? "the room" : Name;
