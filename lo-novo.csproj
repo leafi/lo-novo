@@ -71,6 +71,9 @@
     <Compile Include="Extensions.cs" />
     <Compile Include="SingleOrMultiPlayer.cs" />
     <Compile Include="Game\PommeDeTerre\ControlRoom.cs" />
+    <Compile Include="Game\PommeDeTerre\EmergencyLights.cs" />
+    <Compile Include="Conversation.cs" />
+    <Compile Include="Game\PommeDeTerre\SalesmanFlashback.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

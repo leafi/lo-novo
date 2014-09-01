@@ -15,8 +15,6 @@ namespace lo_novo
 
         public StateEnum RoomState = StateEnum.AInit;
 
-        public int TurnCounter = 5;
-
         public override string Name { get { return "POMME DE TERRE: CONTROL ROOM"; } }
 
         public override string Description
@@ -26,7 +24,10 @@ namespace lo_novo
                 switch (RoomState)
                 {
                     case StateEnum.AInit:
-                        return "dunno yet";
+                        return @"You see a dark fog, punched through by the DIM RED HUE of the EMERGENCY LIGHTS.
+Eventually, your eyes adjust, and you're able to perceive the room and its contents.
+You're in the POMME DE TERRE - the APPLE OF THE EARTH, the ship of you and your COMPADRES, filled with the latest technology of about 50 cycles ago.
+Well, the salesman was right about one thing - it was cheap.";
 
                     case StateEnum.BConversation:
                         return "dunno yet";
@@ -46,7 +47,7 @@ namespace lo_novo
                 switch (RoomState)
                 {
                     case StateEnum.AInit:
-                        return "dunno yet";
+                        return "Lit by a dim red hue, stretching out before you - but not much - is the control room of the Pomme de Terre, or Apple of the Earth.";
 
                     case StateEnum.BConversation:
                         return "dunno yet";
@@ -74,6 +75,7 @@ namespace lo_novo
 
         public ControlRoom()
         {
+
         }
     }
 }
