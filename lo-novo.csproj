@@ -70,6 +70,7 @@
     <Compile Include="ConceptThing.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="SingleOrMultiPlayer.cs" />
+    <Compile Include="Game\PommeDeTerre\ControlRoom.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -94,5 +95,6 @@
   </ProjectExtensions>
   <ItemGroup>
     <Folder Include="Parser\" />
+    <Folder Include="Game\PommeDeTerre\" />
   </ItemGroup>
 </Project>
