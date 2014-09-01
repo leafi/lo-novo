@@ -25,25 +25,26 @@ namespace lo_novo
 
         public Thing Find(string name)
         {
-            return Contents.Select<Thing, Thing>((t) => t.Name == name ? t : null).Single();
+            return Contents.Where<Thing>((t) => t.Name == name).Single();
+
         }
 
         public T Find<T>() where T : Thing
         {
-            return Contents.Select<Thing, T>((t) => typeof(T) == t.GetType() ? (T) t : null).Single();
+            return Contents.Where<Thing>((t) => typeof(T) == t.GetType()).Cast<T>().Single();
         }
 
         public T Find<T>(string name) where T : Thing
         {
-            return Contents.Select<Thing, T>((t) => typeof(T) == t.GetType() ? (T) t : null)
-                .Select<T, T>((p) => p.Name == name ? p : null).Single();
+            return Contents.Where<Thing>((t) => typeof(T) == t.GetType()).Cast<T>()
+                .Where<T>((p) => p.Name == name).Single();
         }
 
         public IEnumerable<Player> Players
         {
             get
             {
-                return State.AllPlayers.Select<Player, Player>((p) => p.Room == this ? p : null);
+                return State.AllPlayers.Where<Player>((p) => p.Room == this);
             }
         }
 

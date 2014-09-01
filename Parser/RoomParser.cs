@@ -166,7 +166,8 @@ namespace lo_novo
                                 }
                                 catch (Exception e)
                                 {
-                                    State.SystemMessage("Teleport failed: " + e.Message);
+                                    State.SystemMessage("Teleport failed: " + e.Message + 
+                                        (e.InnerException != null ? "\nInnerException: " + e.InnerException : ""));
                                 }
                             }
                             else
@@ -214,9 +215,9 @@ namespace lo_novo
                 foreach (var activePassiveRelation in new string[] { "with", "towards?",
                     "from", "away", "away from" })
                 {
-                    if (Regex.IsMatch(s, activePassiveRelation))
+                    if (Regex.IsMatch(s, " " + activePassiveRelation + " "))
                     {
-                        var m = Regex.Match(s, activePassiveRelation + " ");
+                        var m = Regex.Match(s, " " + activePassiveRelation + " ");
                         if (!alreadyEatenActiveNoun)
                             activeNounBits = s.Substring(0, s.IndexOf(m.Value)).Trim().Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
                         passiveNounBits = s.Substring(s.IndexOf(m.Value) + m.Value.Length).Trim().Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
@@ -232,9 +233,9 @@ namespace lo_novo
                     foreach (var activePassiveRelation in new string[] { "at", "away to", "down on",
                         "somewhere (else )?like", "to"})
                     {
-                        if (Regex.IsMatch(s, activePassiveRelation))
+                        if (Regex.IsMatch(s, " " + activePassiveRelation + " "))
                         {
-                            var m = Regex.Match(s, activePassiveRelation + " ");
+                            var m = Regex.Match(s, " " + activePassiveRelation + " ");
                             if (!alreadyEatenActiveNoun)
                                 activeNounBits = s.Substring(0, s.IndexOf(m.Value)).Trim().Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
                             passiveNounBits = s.Substring(s.IndexOf(m.Value) + m.Value.Length).Trim().Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
