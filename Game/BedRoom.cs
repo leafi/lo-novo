@@ -49,7 +49,7 @@ You'd need a week's rations, proper climbing equipment and a guide native to the
             Find("mess").AliasesRegex.AddRange(new string[] { "messy room", "sprawling mess", "room mess" });
 
             Contents.Add(new ConceptThing("dusty glaze coat", "Something you made up.",
-                take: "Ha-ha. It is to laugh. The coat rejects your attempt as facetious."));
+                take: "Ha-ha. It is to laugh. The coat (correctly) rejects your attempt as facetious."));
             Find("dusty glaze coat").AddAliases("coat", "dusty coat", "glazed coat");
 
             Contents.Add(new ConceptThing("light",

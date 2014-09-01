@@ -79,7 +79,7 @@ namespace lo_novo
             State.Player.IRC.Send(output, true);
         }
 
-        public void Describe(bool toAll = false, bool longDesc = true)
+        public virtual void Describe(bool toAll = false, bool longDesc = true)
         {
             Action<string> d = ((s) => { if (toAll) ann(s); else o(s); });
 
@@ -90,7 +90,7 @@ namespace lo_novo
                     d(t.InRoomDescription);
         }
 
-        public void Enter()
+        public virtual void Enter()
         {
             if (!State.Ticking.Contains(this))
                 State.Ticking.Add(this);
@@ -106,24 +106,24 @@ namespace lo_novo
             Unvisited = false;
         }
 
-        public void Leave() 
+        public virtual void Leave() 
         {
-            if (!Players.Any() && State.Ticking.Contains(this))
+            if (Players.SingleOrDefault() == State.Player && State.Ticking.Contains(this))
                 State.Ticking.Remove(this);
-        } 
+        }
 
-        public void Tick() 
+        public virtual void Tick() 
         {
             timeToNextDescribeOnEntry -= State.DeltaTime;
         }
 
-        protected void BuildParser()
+        protected virtual void BuildParser()
         {
             parser = new RoomParser(this);
             DefaultRoomResponses = new DefaultRoomResponses(this);
         }
 
-        public void Parse(string s)
+        public virtual void Parse(string s)
         { 
             parser.Parse(s); 
         }
