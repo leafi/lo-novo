@@ -66,8 +66,6 @@ You'd need a week's rations, proper climbing equipment and a guide native to the
 
 
 
-
         }
     }
 }
-

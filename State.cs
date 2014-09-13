@@ -83,6 +83,11 @@ namespace lo_novo
             State.AllIRC.Send(output);
         }
 
+        public static void spk(string output)
+        {
+            State.AllIRC.Send('"' + output + '"');
+        }
+
         /// <summary>
         /// Addresses the player who triggered this command, but publicly.
         /// </summary>

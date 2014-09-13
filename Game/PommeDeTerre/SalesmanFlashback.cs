@@ -43,7 +43,7 @@ namespace lo_novo
 Beady-eyed, sweaty men with little hair glance at you, but the eye-fucking by RUSTY hisself shows you that you're exactly one man's meal today.
 As for the EMPORIUM itself, " : "Regarding the EMPORIUM, ") + @" it's some big-ass SPACE SHOWROOM with SHINY SHIPS and LESS SHINY SHIPS dotted around.
 PROTO-MARBLE is what the floor is, the ceiling's too far up to make out against the SPOTLIGHTS on the SHINY SHIPS, and the air is stale like last year's Toblerone.
-So many SALESMEN, yet you're the only one there. At risk of belabouring the point, they're sharks, and you're meat.";
+So many SALESMEN, yet you're the only ones there. At risk of belabouring the point, they're sharks, and you're meat.";
             }
         }
 
@@ -61,6 +61,38 @@ Like a novelty Toblerone.";
         {
         }
 
+    }
+
+    public class SalesmanConversation : Conversation
+    {
+        public override void Start()
+        {
+            base.Start();
+
+            State.ann("The SALESMAN licks his lip and starts his spiel. Hoo boy.");
+            State.spk("Ah, " + State.AllPlayers.ChooseRandom().Name + ", just the space person I've been waiting for!");
+
+            AddChoice("How do you know who we are?", () => {
+
+                return true;
+            });
+            AddChoice("Rusty, I presume?", () => {
+                State.spk("By name, but not by nature, hahahahaha!!!");
+                State.o("You fail to see the joke.");
+                State.spk(@"Listen, I've been selling ships to young go-getters such as yourselves for many moons, and I think I know exactly what you need.
+Tell me, have you seen the SUPERROT9001?");
+
+                AddChoice(@"... What about it?", null);
+                //AddChoice(@"
+                return true;
+            });
+            AddChoice("We'd rather look around ourselves.", () => {
+
+                return true;
+            });
+
+            FinishChoices();
+        }
     }
 }
 
