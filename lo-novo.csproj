@@ -74,6 +74,7 @@
     <Compile Include="Game\PommeDeTerre\EmergencyLights.cs" />
     <Compile Include="Conversation.cs" />
     <Compile Include="Game\PommeDeTerre\SalesmanFlashback.cs" />
+    <Compile Include="Communications\IRCSession.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -99,5 +100,11 @@
   <ItemGroup>
     <Folder Include="Parser\" />
     <Folder Include="Game\PommeDeTerre\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="ircdotnet-0.4.1-src\src\IrcDotNet\IrcDotNet.csproj">
+      <Project>{47D551DA-96ED-4EF6-96BF-4832059D4700}</Project>
+      <Name>IrcDotNet</Name>
+    </ProjectReference>
   </ItemGroup>
 </Project>

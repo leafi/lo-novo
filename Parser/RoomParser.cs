@@ -130,8 +130,7 @@ namespace lo_novo
                             State.SystemMessage("Expected commands should be in form 'verb (noun) (with|to|at|... noun)'.");
                             State.SystemMessage("Nouns can be something in the room, a player, yourself, or something in your inventory. Occasionally abstract concepts.");
                             State.SystemMessage("Verbs are like: north, forward, activate, attack, push, talk, take, throw, open, close, stop, climb, climb down, repair, look at, examine.");
-                            State.SystemMessage("Sometimes other things are possible. Report things that you think should work but don't to the creator of the game.");
-                            State.SystemMessage("Check !help for system-level help. (Leaving the party, etc.)");
+                            State.SystemMessage("Extra commands are possible.");
                             return true;
 
                         case "quit":

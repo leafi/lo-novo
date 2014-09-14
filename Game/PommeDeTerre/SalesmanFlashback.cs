@@ -65,6 +65,8 @@ Like a novelty Toblerone.";
 
     public class SalesmanConversation : Conversation
     {
+        public SalesmanConversation(Room room) : base(room) { }
+
         public override void Start()
         {
             base.Start();

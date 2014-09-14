@@ -15,7 +15,7 @@ namespace lo_novo
 
         public override string Description
         {
-            get { return "The room is dark and most unseemly. Surely not a place you'd want to be in for long - it's not lit by the glorious sunshine of being in a good place for good people. \n\nRemember - in multiplayer, you need to prefix commands to the game with a single >."; }
+            get { return "The room is dark and most unseemly. Surely not a place you'd want to be in for long - it's not lit by the glorious sunshine of being in a good place for good people. \n\nRemember - in multiplayer, you need to prefix commands to the game with a single >.\nSuggestion: 'xtravel bedroom' or 'xtravel controlroom'."; }
         }
 
         public override string ShortDescription

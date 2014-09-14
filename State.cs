@@ -112,7 +112,7 @@ namespace lo_novo
 
             // don't let other players have an alias that's equal to someone's name
             // TODO: do the checking at add time, not here! (or just don't check at all..)
-            IEnumerable<string> allNames = AllPlayers.ConvertAll<string>((p) => p.Name);
+            /*IEnumerable<string> allNames = AllPlayers.ConvertAll<string>((p) => p.Name);
             foreach (var p in AllPlayers)
                 foreach (var conflict in p.Aliases.Intersect(allNames))
                 {
@@ -128,7 +128,7 @@ namespace lo_novo
                     {
                         SystemMessage(p.Name + ", the alias '" + s + "' is already in use by " + NameToPlayer[s].Name + ". I'm discarding it. Sorry.");
                         p.Aliases.Remove(s);
-                    }
+                    }*/
                         
         }
 

@@ -13,8 +13,28 @@ namespace lo_novo
 
         static void Main(string[] args)
         {
-            ConsoleStateSetup.Setup();
-            //IRCStateSetup.Setup();
+            //var irc = new IRCSession();
+
+            Console.WriteLine("Type 't' to play in terminal, 'i' to join irc channel.");
+            bool rb = false;
+            while (!rb)
+            {
+                rb = true;
+                switch (Console.ReadKey().KeyChar)
+                {
+                    case 't':
+                        ConsoleStateSetup.Setup();
+                        break;
+
+                    case 'i':
+                        IRCStateSetup.Setup();
+                        break;
+
+                    default:
+                        rb = false;
+                        break;
+                }
+            }
 
             State.SystemMessage("Welcome, one and all. Let's start the game.\n");
 
@@ -38,7 +58,7 @@ namespace lo_novo
                 double dt = (newTime - lastTime).TotalSeconds;
                 if (dt > 5.00)
                 {
-                    State.SystemMessage("Lagging, or time changed? " + dt.ToString() + "s passed, which is >5s");
+                    //State.SystemMessage("Lagging, or time changed? " + dt.ToString() + "s passed, which is >5s");
                     dt = 5.00;
                 }
                 State.Time += dt;
