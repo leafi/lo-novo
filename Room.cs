@@ -12,6 +12,7 @@ namespace lo_novo
         public abstract string Name { get; }
         public abstract string Description { get; }
         public abstract string ShortDescription { get; }
+        public virtual string[] Tags { get { return new string[] { }; } }
         public List<Thing> Contents = new List<Thing>();
         public Dictionary<Thing, string> DescriptionForContent = new Dictionary<Thing, string>();
 
@@ -20,6 +21,9 @@ namespace lo_novo
 
         public List<Tuple<string, EatsNoun, Func<Intention, bool>>> CustomRegex
             = new List<Tuple<string, EatsNoun, Func<Intention, bool>>>();
+
+        // REGEX!!!
+        public List<Tuple<string, Room>> Exits = new List<Tuple<string, Room>>();
 
         private double timeToNextDescribeOnEntry = 0.0;
 

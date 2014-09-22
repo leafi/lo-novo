@@ -111,6 +111,20 @@ namespace lo_novo
                 }
             }
 
+            // 2.5. Exits are a simple kind of custom action.
+            // If e.g. 'north' isn't in the first 4 words, I don't want to know about it.
+            foreach (var eatexit in sbits.Take(4).JoinedAndSplit())
+            {
+                foreach (var rule in room.Exits)
+                {
+                    if (Regex.IsMatch(eatexit, rule.Item1))
+                    {
+                        State.Travel(rule.Item2);
+                        return true;
+                    }
+                }
+            }
+
 
             // 3. If no verb yet, try and choose one from system keywords
             if (!gotVerb)

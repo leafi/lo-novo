@@ -75,6 +75,14 @@
     <Compile Include="Conversation.cs" />
     <Compile Include="Game\PommeDeTerre\SalesmanFlashback.cs" />
     <Compile Include="Communications\IRCSession.cs" />
+    <Compile Include="NPC.cs" />
+    <Compile Include="Services\Clutter\TerrainClutter.cs" />
+    <Compile Include="Services\Adlib.cs" />
+    <Compile Include="Services\Battle\BattleAI.cs" />
+    <Compile Include="Services\Battle\BattleDirector.cs" />
+    <Compile Include="Services\Battle\BattlePlayer.cs" />
+    <Compile Include="Services\Battle\Health.cs" />
+    <Compile Include="Services\TextMine.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -100,6 +108,8 @@
   <ItemGroup>
     <Folder Include="Parser\" />
     <Folder Include="Game\PommeDeTerre\" />
+    <Folder Include="Services\" />
+    <Folder Include="Services\Battle\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="ircdotnet-0.4.1-src\src\IrcDotNet\IrcDotNet.csproj">

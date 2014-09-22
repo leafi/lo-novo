@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -14,6 +16,13 @@ namespace lo_novo
         static void Main(string[] args)
         {
             //var irc = new IRCSession();
+
+            Directory.SetCurrentDirectory("../../");
+            Debug.Assert(File.Exists("lo-novo.csproj"));
+
+            // note: not actually using textmine for anything right now
+            TextMine.Setup();
+
 
             Console.WriteLine("Type 't' to play in terminal, 'i' to join irc channel.");
             bool rb = false;
