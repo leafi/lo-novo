@@ -83,6 +83,7 @@
     <Compile Include="Services\Battle\BattlePlayer.cs" />
     <Compile Include="Services\Battle\Health.cs" />
     <Compile Include="Services\TextMine.cs" />
+    <Compile Include="Services\Battle\BattleInanimate.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

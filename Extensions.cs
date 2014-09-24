@@ -26,6 +26,11 @@ namespace lo_novo
                 foreach (var s in second)
                     yield return f + s;
         }
+
+        public static string FirstCaps(this string s)
+        {
+            return char.ToUpperInvariant(s[0]) + s.Substring(1);
+        }
     }
 }
 

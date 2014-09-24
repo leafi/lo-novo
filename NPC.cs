@@ -4,6 +4,8 @@ namespace lo_novo
 {
     public class NPC // : INoun or : ConceptThing
     {
+        public string Name;
+
         public NPC()
         {
         }

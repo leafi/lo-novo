@@ -9,6 +9,14 @@ namespace lo_novo
         public Player Player;
 
         public BattlePlayer(Player player) { this.Player = player; }
+
+        public void Dispatch(Intention intent)
+        {
+            //var target = intent.ActiveNoun as IBattleTarget;
+
+
+        }
+
     }
 }
 

@@ -10,10 +10,53 @@ namespace lo_novo
     // Ease of writing >> good writing
     public static class Adlib
     {
+        private static string GetName(INoun subject)
+        {
+            if (subject is Player)
+                return (subject as Player).Name;
+            else if (subject is NPC)
+                return (subject as NPC).Name;
+            else if (subject is Thing)
+                return (subject as Thing).Name;
+            else
+                return null;
+        }
+
+        public static string AttackFace(INoun subject = null)
+        {
+            var possess = (subject is NPC || subject is Player) ? "their" : "its";
+            var name = GetName(subject);
+
+            throw new NotImplementedException();
+        }
+
         public static string Compliment(INoun subject = null)
         {
             // e.g. Tom, you're a smart one.
-            throw new NotImplementedException();
+            var name = GetName(subject);
+            var youre = "you're";  // 'its'?
+            var you = "you"; // 'it'?
+
+            if (name != null)
+            {
+                throw new NotImplementedException();
+            }
+            else
+            {
+                return new string[] {
+                    youre + " smart and surprisingly attractive.",
+                    youre + " like the cross between an albatross and a coffee table, a goddamn mess but I still love " + you + ".",
+                    youre + " unbelievable. In a good way.",
+                    youre + " not the first to cross my path, but you sure are the best.",
+                    youre + " the best. A-rou-nd.",
+                    youre + " a brilliant concept, all sausage meat and no substitute sausage meat.",
+                    youre + " a machine.",
+                    youre + " something to be envied, fer sure.",
+                    youre + " like a candle in the wind on a still day.",
+                    youre + " unstoppable!",
+                    youre + " unkeepdownabable."
+                }.ChooseRandom().FirstCaps();
+            }
         }
 
         public static string Insult(INoun subject = null)
