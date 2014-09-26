@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace lo_novo
+namespace lo_novo.PommeDeTerre
 {
     [SinglePlayer]
     public class BedRoom : Room

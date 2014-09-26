@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace lo_novo
+namespace lo_novo.PommeDeTerre
 {
     public class ControlRoom : Room
     {

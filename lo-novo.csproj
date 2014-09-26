@@ -84,6 +84,19 @@
     <Compile Include="Services\TextMine.cs" />
     <Compile Include="Services\Battle\BattleInanimate.cs" />
     <Compile Include="Game\PommeDeTerre\BedRoom.cs" />
+    <Compile Include="Game\LabRaid\ControlRoom.cs" />
+    <Compile Include="Game\LabRaid\WestCorridorS.cs" />
+    <Compile Include="Game\LabRaid\WestCorridorN.cs" />
+    <Compile Include="Game\LabRaid\EastCorridorS.cs" />
+    <Compile Include="Game\LabRaid\EastCorridorN.cs" />
+    <Compile Include="Game\LabRaid\EastMaintenance.cs" />
+    <Compile Include="Game\LabRaid\WestMaintenance.cs" />
+    <Compile Include="Game\LabRaid\LivingQuartersA.cs" />
+    <Compile Include="Game\LabRaid\LivingQuartersB.cs" />
+    <Compile Include="Game\LabRaid\DirectorsOffice.cs" />
+    <Compile Include="Game\LabRaid\ProjectChamber.cs" />
+    <Compile Include="Game\LabRaid\Landing1.cs" />
+    <Compile Include="Game\LabRaid\Landing2.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -111,6 +124,7 @@
     <Folder Include="Game\PommeDeTerre\" />
     <Folder Include="Services\" />
     <Folder Include="Services\Battle\" />
+    <Folder Include="Game\LabRaid\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="ircdotnet-0.4.1-src\src\IrcDotNet\IrcDotNet.csproj">
