@@ -82,7 +82,7 @@ namespace lo_novo
             client.Registered += (object sender, EventArgs ev) => {
                 Console.WriteLine("REGISTERED. (" + ev.ToString() + ")");
                 client.LocalUser.JoinedChannel += (object ss, IrcChannelEventArgs e) => {
-                    if (e.Channel.Name.ToLower().Contains("##calpol"))
+                    if (e.Channel.Name.ToLower().Contains("#lo-novo"))
                     {
                         Console.WriteLine("Joined, I think!");
 
@@ -147,7 +147,7 @@ namespace lo_novo
                     }
                 };
 
-                client.Channels.Join(new string[] { "##calpol" });
+                client.Channels.Join(new string[] { "#lo-novo" });
  
             };
             var ircReg = new IrcUserRegistrationInfo();

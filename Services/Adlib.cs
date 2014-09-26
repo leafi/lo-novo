@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 namespace lo_novo
 {
@@ -20,6 +20,17 @@ namespace lo_novo
                 return (subject as Thing).Name;
             else
                 return null;
+        }
+
+        public static string Refuses(INoun subject = null)
+        {
+            if (subject is Player)
+                return new string[] { (subject as Player).Name + " politely refuses your request.",
+                    (subject as Player).Name + " steadfastly refuses.",
+                    (subject as Player).Name + " suggests better results may be obtained by removing your head from an orifice." }
+                    .ChooseRandom();
+            else
+                throw new NotImplementedException();
         }
 
         public static string AttackFace(INoun subject = null)

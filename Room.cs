@@ -170,7 +170,7 @@ namespace lo_novo
 
         public virtual void Leave() 
         {
-            if (Players.SingleOrDefault() == State.Player && State.Ticking.Contains(this))
+            if (State.Ticking.Contains(this))
                 State.Ticking.Remove(this);
         }
 

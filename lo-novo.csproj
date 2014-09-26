@@ -44,6 +44,7 @@
   <ItemGroup>
     <Compile Include="Communications\ConsoleIRC.cs" />
     <Compile Include="Communications\IIRC.cs" />
+    <Compile Include="Game\LabRaid\LabRaidState.cs" />
     <Compile Include="Game\LabRaid\ShitGym.cs" />
     <Compile Include="ITick.cs" />
     <Compile Include="Game\Lobby.cs" />
