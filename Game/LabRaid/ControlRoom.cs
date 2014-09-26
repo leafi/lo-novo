@@ -28,6 +28,8 @@ namespace lo_novo.LabRaid
 
         public ControlRoom()
         {
+            AddExit(Direction.West, typeof(WestCorridorS));
+            AddExit(Direction.East, typeof(EastCorridorS));
         }
     }
 }

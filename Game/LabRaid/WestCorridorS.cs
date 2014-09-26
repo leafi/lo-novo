@@ -28,6 +28,10 @@ namespace lo_novo.LabRaid
 
         public WestCorridorS()
         {
+            AddExit(Direction.NorthWest, typeof(LivingQuartersB), "quarters");
+            AddExit(Direction.North, typeof(WestCorridorN));
+            AddExit(Direction.SouthWest, typeof(WestMaintenance), "maintenance", "cupboard", "closet");
+            AddExit(Direction.East, typeof(ControlRoom), "control");
         }
     }
 }

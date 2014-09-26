@@ -23,9 +23,58 @@ namespace lo_novo
             = new List<Tuple<string, EatsNoun, Func<Intention, bool>>>();
 
         // REGEX!!!
-        public List<Tuple<string, Room>> Exits = new List<Tuple<string, Room>>();
+        public List<Tuple<string, Type>> Exits = new List<Tuple<string, Type>>();
+        public List<string> ExitCanonicalNames = new List<string>();
 
         private double timeToNextDescribeOnEntry = 0.0;
+
+        public enum Direction
+        {
+            None,
+            North,
+            East,
+            South,
+            West,
+            NorthWest,
+            NorthEast,
+            SouthEast,
+            SouthWest
+        }
+
+        public void AddExit(Direction direction, Type destination)
+        {
+            if (direction == Direction.None)
+                throw new ArgumentException("Can't add exit with null direction without any aliases.");
+
+            Exits.Add(Tuple.Create(Enum.GetName(typeof(Direction), direction).ToLowerInvariant(), destination));
+            ExitCanonicalNames.Add(Enum.GetName(typeof(Direction), direction).ToUpper());
+        }
+
+        public void AddExit(Direction direction, Type destination, params string[] aliasesRegex)
+        {
+            if (direction == Direction.None)
+                throw new ArgumentException("A canonical name must be provided for the exit, because direction is None.");
+
+            var dn = Enum.GetName(typeof(Direction), direction);
+            var ar = new string[] { dn }.Union(aliasesRegex);
+
+            foreach (var r in ar)
+                Exits.Add(Tuple.Create(r.ToLowerInvariant(), destination));
+            ExitCanonicalNames.Add(dn.ToUpper());
+        }
+
+        public void AddExit(Direction direction, Type destination, bool changeCanonicalName, string canonicalName, params string[] aliasesRegex)
+        {
+            if (!changeCanonicalName) // fucking types
+                throw new Exception();
+
+            var add = (direction != Direction.None) ? new string[] { canonicalName, Enum.GetName(typeof(Direction), direction) } : new string[] { canonicalName };
+            var ar = add.Union(aliasesRegex);
+
+            foreach (var r in ar)
+                Exits.Add(Tuple.Create(r.ToLowerInvariant(), destination));
+            ExitCanonicalNames.Add(canonicalName.ToUpper());
+        }
 
         public Thing Find(string name)
         {
@@ -89,10 +138,18 @@ namespace lo_novo
             Action<string> d = ((s) => { if (toAll) ann(s); else o(s); });
 
             d(Name.ToUpper());
-            d(longDesc ? Description : ShortDescription);
+            try {
+                d(longDesc ? Description : ShortDescription);
+            } catch (NotImplementedException) {
+                d("Description/ShortDescription: NOTIMPLEMENTEDEXCEPTION");
+            }
             foreach (var t in Contents)
                 if (t.Important)
                     d(t.InRoomDescription);
+            if (Exits.Count > 0)
+            {
+                d("Exits lie to the " + string.Join(", ", ExitCanonicalNames) + ".");
+            }
         }
 
         public virtual void Enter()

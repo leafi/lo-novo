@@ -28,6 +28,7 @@ namespace lo_novo.LabRaid
 
         public Landing2()
         {
+            AddExit(Direction.South, typeof(ProjectChamber), "chamber", "project");
         }
     }
 }

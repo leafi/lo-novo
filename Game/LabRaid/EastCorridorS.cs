@@ -28,6 +28,9 @@ namespace lo_novo.LabRaid
 
         public EastCorridorS()
         {
+            AddExit(Direction.North, typeof(EastCorridorN));
+            AddExit(Direction.East, typeof(ShitGym), "gym", "gymnasium");
+            AddExit(Direction.West, typeof(ControlRoom), "control room");
         }
     }
 }

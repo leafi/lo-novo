@@ -28,6 +28,7 @@ namespace lo_novo.LabRaid
 
         public EastMaintenance()
         {
+            AddExit(Direction.West, typeof(EastCorridorN), "corridor");
         }
     }
 }

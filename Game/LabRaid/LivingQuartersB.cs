@@ -28,6 +28,7 @@ namespace lo_novo.LabRaid
 
         public LivingQuartersB()
         {
+            AddExit(Direction.East, typeof(WestCorridorS), "corridor");
         }
     }
 }

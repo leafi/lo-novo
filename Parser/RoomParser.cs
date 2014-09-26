@@ -79,9 +79,9 @@ namespace lo_novo
                     if (rule.Item1 != rule.Item1.ToLowerInvariant())
                         State.SystemMessage("warning - custom rule " + rule.Item1 + " isn't equal to (rule).ToLowerInvariant(). user input is always matched in lowercase");
 
-                    if (Regex.IsMatch(eatstring, rule.Item1))
+                    if (Regex.IsMatch(eatstring, "^" + rule.Item1 + "$"))
                     {
-                        var matches = Regex.Matches(eatstring, rule.Item1);
+                        var matches = Regex.Matches(eatstring, "^" + rule.Item1 + "$");
 
                         gotVerb = true;
                         gotVerb2 = true;
@@ -110,21 +110,6 @@ namespace lo_novo
                     }
                 }
             }
-
-            // 2.5. Exits are a simple kind of custom action.
-            // If e.g. 'north' isn't in the first 4 words, I don't want to know about it.
-            foreach (var eatexit in sbits.Take(4).JoinedAndSplit())
-            {
-                foreach (var rule in room.Exits)
-                {
-                    if (Regex.IsMatch(eatexit, rule.Item1))
-                    {
-                        State.Travel(rule.Item2);
-                        return true;
-                    }
-                }
-            }
-
 
             // 3. If no verb yet, try and choose one from system keywords
             if (!gotVerb)
@@ -201,10 +186,86 @@ namespace lo_novo
                 }
             }
 
-            // 4. Still no verb? Give up.
+            // 4. Still no verb? Look for exits. If none, give up.
             if (!gotVerb)
             {
-                debug = "no verb";
+                // 4.001. Special case for 'out' & only 1 exit.
+                if ((sbits.Take(2).Contains("out") || sbits.Take(2).Contains("outside")) && room.Exits.ConvertAll<Type>((t) => t.Item2).Distinct().Count() == 1)
+                {
+                    State.Travel(room.Exits[0].Item2);
+                    return true;
+                }
+
+                // 4.01. Turn n,e,s,w,ne,nw,se,sw into long form
+                var sbits2 = new List<string>();
+                var sod = new Dictionary<string, string>() { 
+                    {"n", "north"},
+                    {"e", "east"},
+                    {"w", "west"},
+                    {"s", "south"},
+                    {"nw", "northwest"},
+                    {"ne", "northeast"},
+                    {"se", "southeast"},
+                    {"sw", "southwest"}
+                };
+
+                foreach (var spot in sbits)
+                {
+                    if (sod.ContainsKey(spot))
+                        sbits2.Add(sod[spot]);
+                    else
+                        sbits2.Add(spot);
+                }
+
+                sbits = sbits2;
+
+                // 4.1. Exits are a simple kind of custom action.
+                // If e.g. 'north' isn't in the first 4 words, I don't want to know about it.
+                foreach (var eatexit in sbits.Take(4).JoinedAndSplit())
+                {
+                    foreach (var rule in room.Exits)
+                    {
+                        if (Regex.IsMatch(eatexit, "^" + rule.Item1 + "$"))
+                        {
+                            State.Travel(rule.Item2);
+                            return true;
+                        }
+                    }
+                }
+
+                // 4.2. Failed? Maybe they went 'northeast' then 'southwest', but latter room script only gave 'west'.
+                foreach (var eatexit in sbits.Take(4).JoinedAndSplit())
+                {
+                    foreach (var rule in room.Exits)
+                    {
+                        bool b = false;
+
+                        if (Regex.IsMatch(eatexit, "^" + rule.Item1.Replace("north", "northwest") + "$"))
+                            b = true;
+                        if (Regex.IsMatch(eatexit, "^" + rule.Item1.Replace("north", "northeast") + "$"))
+                            b = true;
+                        if (Regex.IsMatch(eatexit, "^" + rule.Item1.Replace("east", "northeast") + "$"))
+                            b = true;
+                        if (Regex.IsMatch(eatexit, "^" + rule.Item1.Replace("east", "southeast") + "$"))
+                            b = true;
+                        if (Regex.IsMatch(eatexit, "^" + rule.Item1.Replace("south", "southeast") + "$"))
+                            b = true;
+                        if (Regex.IsMatch(eatexit, "^" + rule.Item1.Replace("south", "southwest") + "$"))
+                            b = true;
+                        if (Regex.IsMatch(eatexit, "^" + rule.Item1.Replace("west", "northwest") + "$"))
+                            b = true;
+                        if (Regex.IsMatch(eatexit, "^" + rule.Item1.Replace("west", "southwest") + "$"))
+                            b = true;
+
+                        if (b)
+                        {
+                            State.Travel(rule.Item2);
+                            return true;
+                        }
+                    }
+                }
+
+                debug = "no verb/ambiguous exit";
                 return false;
             }
 

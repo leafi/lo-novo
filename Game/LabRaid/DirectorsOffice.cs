@@ -28,6 +28,7 @@ namespace lo_novo.LabRaid
 
         public DirectorsOffice()
         {
+            AddExit(Direction.West, typeof(EastCorridorN), "corridor");
         }
     }
 }
