@@ -1,46 +1,68 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace lo_novo
 {
     public class ConceptThing : Thing
     {
         private string name;
-        private string activate = null;
-        private string attack = null;
-        private string pushPull = null;
-        private string talk = null;
-        private string take = null;
-        private string punt = null;
-        private string stop = null;
-        private string openClose = null;
-        private string climbDescend = null;
-        private string modify = null;
+
+        private Dictionary<DefaultVerb, FunOrString> actions
+            = new Dictionary<DefaultVerb, FunOrString>();
 
         public override string Name { get { return name; } }
 
-        public ConceptThing(string name, //string description = null, string inRoomDescription = null,
-            string furtherInRoomDescription = null, string activate = null, string attack = null,
-            string pushPull = null, string talk = null, string take = null, string punt = null,
-            string stop = null, string openClose = null, string climbDescend = null, string modify = null)
+        public void Set(DefaultVerb verb, FunOrString funStr)
+        {
+            if (actions.ContainsKey(verb))
+                actions.Remove(verb);
+
+            actions.Add(verb, funStr);
+        }
+
+        public FunOrString Get(DefaultVerb verb)
+        {
+            return actions.ContainsKey(verb) ? actions[verb] : null;
+        }
+
+        public ConceptThing(string name, string description = null,
+            FunOrString activate = null, FunOrString attack = null,
+            FunOrString pushPull = null, FunOrString talk = null, FunOrString take = null, 
+            FunOrString punt = null, FunOrString stop = null, FunOrString openClose = null, 
+            FunOrString climbDescend = null, FunOrString modify = null)
         {
             this.name = name;
-            //this.Description = description;
-            //this.InRoomDescription = inRoomDescription;
-            this.Description = furtherInRoomDescription;
-            this.activate = activate;
-            this.attack = attack;
-            this.pushPull = pushPull;
-            this.talk = talk;
-            this.take = take;
-            this.punt = punt;
-            this.stop = stop;
-            this.openClose = openClose;
-            this.climbDescend = climbDescend;
-            this.modify = modify;
+            this.Description = description;
 
-            this.Announce = false;
-            this.CanTake = false;
-            this.Heavy = true;
+            if (activate != null)
+                Set(DefaultVerb.Activate, activate);
+            if (attack != null)
+                Set(DefaultVerb.Attack, attack);
+            if (pushPull != null)
+            {
+                Set(DefaultVerb.Push, pushPull);
+                Set(DefaultVerb.Pull, pushPull);
+            }
+            if (talk != null)
+                Set(DefaultVerb.Talk, talk);
+            if (take != null)
+                Set(DefaultVerb.Take, take);
+            if (punt != null)
+                Set(DefaultVerb.Punt, punt);
+            if (stop != null)
+                Set(DefaultVerb.Stop, stop);
+            if (openClose != null)
+            {
+                Set(DefaultVerb.Open, openClose);
+                Set(DefaultVerb.Close, openClose);
+            }
+            if (climbDescend != null)
+            {
+                Set(DefaultVerb.Climb, climbDescend);
+                Set(DefaultVerb.Descend, climbDescend);
+            }
+            if (modify != null)
+                Set(DefaultVerb.Modify, modify);
         }
 
         private bool magic(string outputOrNull)
@@ -53,69 +75,19 @@ namespace lo_novo
             return false;
         }
 
-        public override bool Activate(Intention i)
+        public override bool Dispatch(Intention i)
         {
-            return magic(activate);
-        }
+            if (actions.ContainsKey(i.DefaultVerb))
+            {
+                var a = actions[i.DefaultVerb];
 
-        public override bool Climb(Intention i)
-        {
-            return magic(climbDescend ?? "Where would you even start?");
-        }
+                if (a.IsString)
+                    State.o(a);
+                else if (((Func<Intention, bool>)a)(i))
+                    return true;
+            }
 
-        public override bool Descend(Intention i)
-        {
-            return magic(climbDescend);
-        }
-
-        public override bool Attack(Intention i)
-        {
-            return magic(attack);
-        }
-
-        public override bool Close(Intention i)
-        {
-            return magic(openClose);
-        }
-
-        public override bool Open(Intention i)
-        {
-            return magic(openClose);
-        }
-
-        public override bool Modify(Intention i)
-        {
-            return magic(modify ?? "It appears to be doing an adequate job as-is.");
-        }
-
-        public override bool Pull(Intention i)
-        {
-            return magic(pushPull);
-        }
-
-        public override bool Push(Intention i)
-        {
-            return magic(pushPull);
-        }
-
-        public override bool Punt(Intention i)
-        {
-            return magic(punt);
-        }
-
-        public override bool Take(Intention i)
-        {
-            return magic(take);
-        }
-
-        public override bool Stop(Intention i)
-        {
-            return magic(stop);
-        }
-
-        public override bool Talk(Intention i)
-        {
-            return magic(talk);
+            return base.Dispatch(i);
         }
     }
 }

@@ -24,7 +24,7 @@ Your room is a mess, but the ancient and terrible dance of the universe continue
         public BedRoom()
         {
             Contents.Add(new ConceptThing("mess",
-                furtherInRoomDescription: "The mess is sprawling. You casually wonder how long it'll take before"
+                description: "The mess is sprawling. You casually wonder how long it'll take before"
                 + " it realises its own power and moves to take over the entire universe and everything in it."
                 + "\nFrankly, it looks like it's about halfway there.",
                 activate: "It's inert, thank the gods.",
@@ -45,7 +45,7 @@ You'd need a week's rations, proper climbing equipment and a guide native to the
             Find("dusty glaze coat").AddAliases("coat", "dusty coat", "glazed coat");
 
             Contents.Add(new ConceptThing("light",
-                furtherInRoomDescription: "Floating through the viewshield, it's warm and comforting. A real ray of sunshine.",
+                description: "Floating through the viewshield, it's warm and comforting. A real ray of sunshine.",
                 activate: "It is active on many parts of the spectrum, without your help.",
                 attack: "It passes through you, or the other way round.",
                 pushPull: "It passes through you, or, perhaps, the other way around.",

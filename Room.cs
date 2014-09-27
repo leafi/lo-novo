@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace lo_novo
 {
-    public abstract class Room : FalseIObey, ITick, INoun
+    public abstract class Room : IHandleDispatch, ITick, INoun
     {
         public bool Unvisited = true;
         public abstract string Name { get; }
@@ -176,11 +176,12 @@ namespace lo_novo
         }
 
         /// <summary>
-        /// Chance for a room to handle a command before traditional dispatching.
+        /// Chance for a room to handle/change a command before traditional dispatching.
         /// </summary>
         /// <param name="i">the Intention about to undergo traditional dispatch</param>
-        /// <returns><c>true</c> if dispatch was handled in this function, else <c>false</c>.</returns>
-        public virtual bool EarlyDispatch(Intention i)
+        public virtual void PreDispatch(Intention i) { }
+
+        public virtual bool Dispatch(Intention i)
         {
             return false;
         }

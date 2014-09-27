@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace lo_novo
 {
-    public abstract class Thing : FalseIObey, INoun
+    public abstract class Thing : INoun, IHandleDispatch
     {
         public abstract string Name { get; }
         public string Preposition = "a";
@@ -26,6 +26,27 @@ namespace lo_novo
         public void AddAliases(params string[] aliasesRegex)
         {
             AliasesRegex.AddRange(aliasesRegex);
+        }
+
+        public virtual bool Dispatch(Intention i)
+        {
+            if (i.DefaultVerb == DefaultVerb.Look)
+            {
+                State.o(Description);
+                return true;
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// Chance for Thing to do something in response to an action occurring involving it.
+        /// </summary>
+        /// <returns><c>true</c> if we did something that means the game should not adlib about what happened to the Thing, <c>false</c> otherwise.</returns>
+        /// <param name="i">The index.</param>
+        public virtual bool PostDispatch(Intention i)
+        {
+            return false;
         }
 
         public override string ToString()

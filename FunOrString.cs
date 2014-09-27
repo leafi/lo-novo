@@ -2,7 +2,7 @@
 
 namespace lo_novo
 {
-    public struct FunOrString
+    public class FunOrString
     {
         private Func<Intention, bool> fun = null;
         private string str = null;
@@ -18,8 +18,8 @@ namespace lo_novo
         public Func<Intention, bool> GetFun() { return fun; }
         public string GetString() { return str; }
 
-        public bool IsFun() { return fun != null; }
-        public bool IsString() { return str != null; }
+        public bool IsFun { get { return fun != null; } }
+        public bool IsString { get { return str != null; } }
     }
 }
 

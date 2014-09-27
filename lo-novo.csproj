@@ -56,8 +56,6 @@
     <Compile Include="Thing.cs" />
     <Compile Include="Communications\ConsoleStateSetup.cs" />
     <Compile Include="Communications\IRCStateSetup.cs" />
-    <Compile Include="Parser\IObey.cs" />
-    <Compile Include="Parser\FalseIObey.cs" />
     <Compile Include="Parser\Intention.cs" />
     <Compile Include="Parser\RoomParser.cs" />
     <Compile Include="Parser\DefaultVerb.cs" />
@@ -100,6 +98,7 @@
     <Compile Include="Game\LabRaid\Landing1.cs" />
     <Compile Include="Game\LabRaid\Landing2.cs" />
     <Compile Include="FunOrString.cs" />
+    <Compile Include="Parser\IHandleDispatch.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

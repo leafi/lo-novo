@@ -472,41 +472,37 @@ namespace lo_novo
 
             // 8. Dispatch actions. Order:
             //  (a) Custom action if any
-            //  (1.1854138) Room's EarlyDispatch function
-            //  (b) Room script
-            //  (c) Active noun script
-            //  (d) Default room script if no active noun/noun is in room
-            //  (e) Specific item script if active noun is in room
-            //  (f) Default inventory item script if active noun in inventory
-            //  (g) Default room script regardless of the nouns
-            //  (h) Give up.
+            //  (1.1854138) Room's PreDispatch function - chance to modify Intention!
+            //  IF active noun null/in room:
+            //      (b) Room script if active noun null/in room
+            //  IF active noun in inventory:
+            //      (b) Default inventory item script if active noun in inventory
+            //  (c) Room script
+            //  (d) Default room script
+            //  (e) Give up.
+
+            //
+            // Things can handle Dispatch, but it's up to room scripts (& default scripts) to make these calls.
+            //
 
             if (customRule != null)
                 if (customRule(intent))
                     return true;
 
-            if (State.Room.EarlyDispatch(intent))
-                return true;
-
-            if (intent.DispatchOnIObey(State.Room))
-                return true;
-
-            if (intent.ActiveNoun != null && intent.ActiveNoun is IObey && intent.DispatchOnIObey(intent.ActiveNoun as IObey))
-                return true;
+            State.Room.PreDispatch(intent);
 
             if ((intent.ActiveNoun == null || State.Room.Contents.Contains(intent.ActiveNoun as Thing))
-                && intent.DispatchOnIObey(State.Room.DefaultRoomResponses))
-                return true;
-
-            if (intent.ActiveNoun != null && State.Room.Contents.Contains(intent.ActiveNoun as Thing)
-                && intent.DispatchOnIObey(intent.ActiveNoun as Thing))
+                && State.Room.Dispatch(intent))
                 return true;
 
             if (intent.ActiveNoun != null && State.Player.Inventory.Contains(intent.ActiveNoun as Thing)
-                && intent.DispatchOnIObey(State.Player.DefaultInventoryResponses))
+                && State.Player.DefaultInventoryResponses.Dispatch(intent))
                 return true;
 
-            if (intent.DispatchOnIObey(State.Room.DefaultRoomResponses))
+            if (State.Room.Dispatch(intent))
+                return true;
+
+            if (State.Room.DefaultRoomResponses.Dispatch(intent))
                 return true;
 
             debug = "i understood you, but nothing accepted the dispatch";

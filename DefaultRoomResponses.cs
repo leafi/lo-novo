@@ -2,7 +2,7 @@
 
 namespace lo_novo
 {
-    public class DefaultRoomResponses : FalseIObey
+    public class DefaultRoomResponses : IHandleDispatch
     {
         protected Room room;
 
@@ -11,7 +11,19 @@ namespace lo_novo
             room = r;
         }
 
-        public override bool Look(Intention i)
+        public virtual bool Dispatch(Intention i)
+        {
+            // Try dispatch to ActiveNoun first.
+            if (i.ActiveNoun != null && (i.ActiveNoun is IHandleDispatch) && (i.ActiveNoun as IHandleDispatch).Dispatch(i))
+                return true;
+
+            if (i.DefaultVerb == DefaultVerb.Look)
+                return look(i);
+
+            return false;
+        }
+
+        private bool look(Intention i)
         {
             if (i.WholeRoom)
             {
