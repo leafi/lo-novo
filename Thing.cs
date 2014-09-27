@@ -30,7 +30,7 @@ namespace lo_novo
         /// <summary>
         /// Should we tell the user about this object when describing the room?
         /// </summary>
-        public bool Important = true;
+        public bool Announce = true;
 
         public void AddAliases(params string[] aliasesRegex)
         {

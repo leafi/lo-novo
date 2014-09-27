@@ -107,7 +107,7 @@ namespace lo_novo
         public virtual string GetFullDescription()
         {
             return string.Join("\n", new string[] { Name.ToUpper(), Description }
-                .Union(Contents.Where((t) => t.Important).ToList().ConvertAll<string>((t) => t.QuickDescription)));
+                .Union(Contents.Where((t) => t.Announce).ToList().ConvertAll<string>((t) => t.QuickDescription)));
         }
 
         public virtual void Enter()

@@ -26,7 +26,7 @@ namespace lo_novo
             this.name = name;
             //this.Description = description;
             //this.InRoomDescription = inRoomDescription;
-            this.FurtherInRoomDescription = furtherInRoomDescription;
+            this.Description = furtherInRoomDescription;
             this.activate = activate;
             this.attack = attack;
             this.pushPull = pushPull;
@@ -38,7 +38,7 @@ namespace lo_novo
             this.climbDescend = climbDescend;
             this.modify = modify;
 
-            this.Important = false;
+            this.Announce = false;
             this.CanTake = false;
             this.Heavy = true;
         }
