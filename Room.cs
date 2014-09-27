@@ -25,7 +25,7 @@ namespace lo_novo
         public List<Tuple<string, Type>> Exits = new List<Tuple<string, Type>>();
         public List<string> ExitCanonicalNames = new List<string>();
 
-        private double timeToNextDescribeOnEntry = 0.0;
+        private string lastFullDescription = "";
 
         public enum Direction
         {
@@ -143,14 +143,15 @@ namespace lo_novo
             if (!State.Ticking.Contains(this))
                 State.Ticking.Add(this);
 
-            if (timeToNextDescribeOnEntry <= 0.0)
+            var d = GetFullDescription();
+            if (d != lastFullDescription)
             {
-                State.o(GetFullDescription());
+                lastFullDescription = d;
+                State.o(d);
             }
             else if (!State.TravellingAll)
                 State.o("-> " + Name);
 
-            timeToNextDescribeOnEntry = 30;
             Unvisited = false;
         }
 
@@ -160,10 +161,7 @@ namespace lo_novo
                 State.Ticking.Remove(this);
         }
 
-        public virtual void Tick() 
-        {
-            timeToNextDescribeOnEntry -= State.DeltaTime;
-        }
+        public virtual void Tick() { }
 
         protected virtual void BuildParser()
         {
