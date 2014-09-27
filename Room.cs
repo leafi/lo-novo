@@ -125,6 +125,9 @@ namespace lo_novo
             if (noQuickDesc.Count > 0)
                 lines.Add("Additionally, there's " + string.Join(", ", noQuickDesc) + ".");
 
+            if (Exits.Count > 0)
+                lines.Add("Exits lie to the " + string.Join(", ", ExitCanonicalNames) + ".");
+
             return string.Join("\n", lines);
         }
 
