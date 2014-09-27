@@ -110,26 +110,13 @@ namespace lo_novo
         {
             NameToPlayer.Clear();
 
-            // don't let other players have an alias that's equal to someone's name
-            // TODO: do the checking at add time, not here! (or just don't check at all..)
-            /*IEnumerable<string> allNames = AllPlayers.ConvertAll<string>((p) => p.Name);
             foreach (var p in AllPlayers)
-                foreach (var conflict in p.Aliases.Intersect(allNames))
-                {
-                    SystemMessage(p.Name + ", one of your aliases is " + conflict + "'s name. This alias will be discarded.");
-                    p.Aliases.Remove(conflict);
-                }
+                NameToPlayer.Add(p.Name, p);
 
             foreach (var p in AllPlayers)
-                foreach (var s in p.Aliases.Union(new string[] { p.Name }))
+                foreach (var s in p.Aliases)
                     if (!NameToPlayer.ContainsKey(s))
                         NameToPlayer.Add(s, p);
-                    else
-                    {
-                        SystemMessage(p.Name + ", the alias '" + s + "' is already in use by " + NameToPlayer[s].Name + ". I'm discarding it. Sorry.");
-                        p.Aliases.Remove(s);
-                    }*/
-                        
         }
 
         public static void Travel(Room destination)
