@@ -270,8 +270,8 @@ namespace lo_novo
             }
 
             // 5. We should have at least a verb now. Discard verb from search *STRING*.
-            // TODO: err this replaces all instances
-            s = string.Join(" ", sbits).Replace(eaten, "").Trim();
+            s = string.Join(" ", sbits);
+            s = s.Substring(0, s.IndexOf(eaten)) + " " + s.Substring(s.IndexOf(eaten) + eaten.Length).Replace("  ", " ").Trim();
 
             // 6. are we searching for the active or the passive noun?
             string[] activeNounBits = null;
