@@ -39,7 +39,7 @@ namespace lo_novo
                 ((intent) => {
                     var b = fun();
                     if (!b)
-                        State.ann("(Conversation choices are the same as before. Type 'choices' for reminder.)");
+                        State.o("(Conversation choices are the same as before. Type 'choices' for reminder.)");
                     return true;
                 })
             ));
@@ -55,7 +55,7 @@ namespace lo_novo
                 EatsNoun.Zero,
                 ((intent) => {
                     foreach (var pcp in prevChoicePrompts)
-                        State.ann(pcp);
+                        State.o(pcp);
                     return true;
                 })
             ));
@@ -73,7 +73,7 @@ namespace lo_novo
             choiceIdx = 1;
 
             foreach (var cp in choicePrompts)
-                State.ann(cp);
+                State.o(cp);
 
             prevChoicePrompts = choicePrompts;
 

@@ -22,7 +22,7 @@ namespace lo_novo.PommeDeTerre
                 State.o("With the subtly placed and well-written flashback over, you wish only to purge the blasted SALESMAN from your mind.");
             else
             {
-                State.ann("At " + State.Player.Name + "'s behest, you find yourselves dragged into a flashback. It was many moons ago...");
+                State.o("At " + State.Player.Name + "'s behest, you find yourselves dragged into a flashback. It was many moons ago...");
                 State.TravelAll(typeof(SalesmanFlashbackRoom));
                 FlashbackDone = true;
             }
@@ -61,18 +61,18 @@ So many SALESMEN, yet you're the only ones there. At risk of belabouring the poi
         {
             base.Start();
 
-            State.ann("The SALESMAN licks his lip and starts his spiel. Hoo boy.");
-            State.spk("Ah, " + State.AllPlayers.ChooseRandom().Name + ", just the space person I've been waiting for!");
+            State.o("The SALESMAN licks his lip and starts his spiel. Hoo boy.");
+            State.o("<SALESMAN> Ah, " + State.AllPlayers.ChooseRandom().Name + ", just the space person I've been waiting for!");
 
             AddChoice("How do you know who we are?", () => {
 
                 return true;
             });
             AddChoice("Rusty, I presume?", () => {
-                State.spk("By name, but not by nature, hahahahaha!!!");
+                State.o("<SALESMAN> By name, but not by nature, hahahahaha!!!");
                 State.o("You fail to see the joke.");
-                State.spk(@"Listen, I've been selling ships to young go-getters such as yourselves for many moons, and I think I know exactly what you need.
-Tell me, have you seen the SUPERROT9001?");
+                State.o(@"<SALESMAN> Listen, I've been selling ships to young go-getters such as yourselves for many moons, and I think I know exactly what you need.
+<SALESMAN> Tell me, have you seen the SUPERROT9001?");
 
                 AddChoice(@"... What about it?", null);
                 //AddChoice(@"

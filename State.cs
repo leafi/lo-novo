@@ -75,35 +75,12 @@ namespace lo_novo
         }
 
         /// <summary>
-        /// Announcement made to all players, irrespective of who triggered the command.
+        /// Announces the text to all players.
         /// </summary>
-        /// <param name="output">Text to announce to all players</param>
-        public static void ann(string output)
-        {
-            State.AllIRC.Send(output);
-        }
-
-        public static void spk(string output)
-        {
-            State.AllIRC.Send('"' + output + '"');
-        }
-
-        /// <summary>
-        /// Addresses the player who triggered this command, but publicly.
-        /// </summary>
-        /// <param name="output">Text to display (publicly!) to the player who triggered this command</param>
+        /// <param name="output">Text to display to all players</param>
         public static void o(string output)
         {
-            State.Player.IRC.Send(output);
-        }
-
-        /// <summary>
-        /// Addresses the player who triggered this command, privately.
-        /// </summary>
-        /// <param name="output">Text to whisper to the player who triggered this command</param>
-        public static void whis(string output)
-        {
-            State.Player.IRC.Send(output, true);
+            State.AllIRC.Send(output);
         }
 
         public static void RebuildNameToPlayer()
