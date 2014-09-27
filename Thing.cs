@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace lo_novo
 {
-    public abstract class Thing : FalseIObey, ITick, INoun
+    public abstract class Thing : FalseIObey, INoun
     {
         public abstract string Name { get; }
         public string Preposition = "a";
@@ -36,8 +36,6 @@ namespace lo_novo
         {
             AliasesRegex.AddRange(aliasesRegex);
         }
-
-        public void Tick() { }
 
         public override string ToString()
         {

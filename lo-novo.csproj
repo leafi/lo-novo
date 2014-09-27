@@ -99,6 +99,7 @@
     <Compile Include="Game\LabRaid\ProjectChamber.cs" />
     <Compile Include="Game\LabRaid\Landing1.cs" />
     <Compile Include="Game\LabRaid\Landing2.cs" />
+    <Compile Include="FunOrString.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
