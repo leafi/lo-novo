@@ -4,13 +4,12 @@ namespace lo_novo.PommeDeTerre
 {
     public class SalesmanControlRoomThing : Thing
     {
-        public override string Name { get { return "salesman"; } }
-
         public bool FlashbackEnabled = true;
         public bool FlashbackDone = false;
 
         public SalesmanControlRoomThing()
         {
+            Name = "salesman";
             AddAliases("(trusty )?rusty", "rusty's( trusty)?( slightly[ \\-]used)?( space ?mobile)?( emporium)?");
         }
 
@@ -33,22 +32,27 @@ namespace lo_novo.PommeDeTerre
 
     public class SalesmanFlashbackRoom : Room
     {
-        public override string Name { get { return "TRUSTY RUSTY'S SLIGHTLY-USED SPACEMOBILE EMPORIUM"; } }
-
-        public override string Description
-        {
-            get
-            {
-                return (Unvisited ? @"You land in grainy black 'n' white, in cycles gone by, in the past.
-Beady-eyed, sweaty men with little hair glance at you, but the eye-fucking by RUSTY hisself shows you that you're exactly one man's meal today.
-As for the EMPORIUM itself, " : "Regarding the EMPORIUM, ") + @" it's some big-ass SPACE SHOWROOM with SHINY SHIPS and LESS SHINY SHIPS dotted around.
-PROTO-MARBLE is what the floor is, the ceiling's too far up to make out against the SPOTLIGHTS on the SHINY SHIPS, and the air is stale like last year's Toblerone.
-So many SALESMEN, yet you're the only ones there. At risk of belabouring the point, they're sharks, and you're meat.";
-            }
-        }
-
         public SalesmanFlashbackRoom()
         {
+            Name = "TRUSTY RUSTY'S SLIGHTLY-USED SPACEMOBILE EMPORIUM";
+            Description = @"Regarding the EMPORIUM, it's some big-ass SPACE SHOWROOM with SHINY SHIPS and LESS SHINY SHIPS dotted around.
+PROTO-MARBLE is what the floor is, the ceiling's too far up to make out against the SPOTLIGHTS on the SHINY SHIPS, and the air is stale like last year's Toblerone.
+So many SALESMEN, yet you're the only ones there. At risk of belabouring the point, they're sharks, and you're meat.";
+        }
+
+        public bool first = true;
+
+        public override void Enter()
+        {
+            if (first)
+            {
+                State.o(@"You land in grainy black 'n' white, in cycles gone by, in the past.
+Beady-eyed, sweaty men with little hair glance at you, but the eye-fucking by RUSTY hisself shows you that you're exactly one man's meal today.");
+                first = false;
+            }
+                
+
+            base.Enter();
         }
 
     }

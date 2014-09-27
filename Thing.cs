@@ -8,7 +8,7 @@ namespace lo_novo
 {
     public abstract class Thing : INoun, IHandleDispatch
     {
-        public abstract string Name { get; }
+        public string Name = "NOT SET";
         public string Preposition = "a";
         public string QuickDescription = null;
         public string Description = null;

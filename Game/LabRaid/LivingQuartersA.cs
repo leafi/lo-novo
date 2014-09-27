@@ -4,22 +4,10 @@ namespace lo_novo.LabRaid
 {
     public class LivingQuartersA : Room
     {
-        #region implemented abstract members of Room
-
-        public override string Name { get { return "Living Quarters A"; } }
-
-        public override string Description
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
-        }
-
-        #endregion
-
         public LivingQuartersA()
         {
+            Name = "Living Quarters Alpha";
+
             AddExit(Direction.East, typeof(WestCorridorN), "corridor");
         }
     }

@@ -8,15 +8,9 @@ namespace lo_novo.LabRaid
 {
     public class ShitGym : Room
     {
-        public override string Name { get { return "Shit Gymnasium"; } }
-
-        public override string Description
-        {
-            get { throw new NotImplementedException(); }
-        }
-
         public ShitGym()
         {
+            Name = "Shit Gymnasium";
             AddExit(Direction.West, typeof(EastCorridorS), "corridor");
         }
     }

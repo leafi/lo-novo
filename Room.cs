@@ -8,12 +8,10 @@ namespace lo_novo
 {
     public abstract class Room : IHandleDispatch, ITick, INoun
     {
-        public bool Unvisited = true;
-        public abstract string Name { get; }
-        public abstract string Description { get; }
+        public string Name = null;
+        public string Description = null;
         public virtual string[] Tags { get { return new string[] { }; } }
         public List<Thing> Contents = new List<Thing>();
-        public Dictionary<Thing, string> DescriptionForContent = new Dictionary<Thing, string>();
 
         protected RoomParser parser;
         internal DefaultRoomResponses DefaultRoomResponses;
@@ -110,12 +108,8 @@ namespace lo_novo
         {
             var lines = new List<string>();
 
-            lines.Add(Name.ToUpper());
-            try {
-                lines.Add(Description);
-            } catch (NotImplementedException) {
-                lines.Add("ENODESCRIPTION");
-            }
+            lines.Add((Name ?? "ENONAME").ToUpper());
+            lines.Add(Description ?? "ENODESCRIPTION");
 
             var noQuickDesc = new List<string>();
 
@@ -149,9 +143,7 @@ namespace lo_novo
                 State.o(d);
             }
             else if (!State.TravellingAll)
-                State.o("-> " + Name);
-
-            Unvisited = false;
+                State.o("-> " + (Name ?? "ENONAME"));
         }
 
         public virtual void Leave() 
@@ -197,7 +189,7 @@ namespace lo_novo
 
         public override string ToString()
         {
-            return (State.Room == this) ? "the room" : Name;
+            return (State.Room == this) ? "the room" : (Name ?? "ENONAME");
         }
 
     }

@@ -15,31 +15,6 @@ namespace lo_novo.PommeDeTerre
 
         public StateEnum RoomState = StateEnum.AInit;
 
-        public override string Name { get { return "POMME DE TERRE: CONTROL ROOM"; } }
-
-        public override string Description
-        {
-            get
-            {
-                switch (RoomState)
-                {
-                    case StateEnum.AInit:
-                        return @"You see a dark fog, punched through by the DIM RED HUE of the EMERGENCY LIGHTS.
-Eventually, your eyes adjust, and you're able to perceive the room and its contents.
-You're in the POMME DE TERRE - the APPLE OF THE EARTH, the ship of you and your COMPADRES, filled with the latest technology of about 50 cycles ago.
-Well, the salesman was right about one thing - it was cheap.";
-
-                    case StateEnum.BConversation:
-                        return "dunno yet";
-
-                    case StateEnum.CExplore:
-                        return "dunno yet";
-                }
-
-                throw new NotImplementedException();
-            }
-        }
-
         public void Transition(StateEnum next)
         {
             if ((RoomState == StateEnum.AInit && next != StateEnum.BConversation)
@@ -54,7 +29,11 @@ Well, the salesman was right about one thing - it was cheap.";
 
         public ControlRoom()
         {
-
+            Name = "POMME DE TERRE: CONTROL ROOM";
+            Description = @"You see a dark fog, punched through by the DIM RED HUE of the EMERGENCY LIGHTS.
+Eventually, your eyes adjust, and you're able to perceive the room and its contents.
+You're in the POMME DE TERRE - the APPLE OF THE EARTH, the ship of you and your COMPADRES, filled with the latest technology of about 50 cycles ago.
+Well, the salesman was right about one thing - it was cheap.";
         }
     }
 }

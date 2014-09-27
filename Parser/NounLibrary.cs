@@ -59,7 +59,7 @@ namespace lo_novo
                 }
             }
 
-            tu(Regex.Escape(State.Room.Name), State.Room);
+            tu(Regex.Escape((State.Room.Name ?? "ENONAME")), State.Room);
             tu("room", State.Room);
 
             // ugh... fix up regexp :x

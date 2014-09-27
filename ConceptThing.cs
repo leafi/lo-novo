@@ -5,12 +5,8 @@ namespace lo_novo
 {
     public class ConceptThing : Thing
     {
-        private string name;
-
         private Dictionary<DefaultVerb, FunOrString> actions
             = new Dictionary<DefaultVerb, FunOrString>();
-
-        public override string Name { get { return name; } }
 
         public void Set(DefaultVerb verb, FunOrString funStr)
         {
@@ -31,7 +27,7 @@ namespace lo_novo
             FunOrString punt = null, FunOrString stop = null, FunOrString openClose = null, 
             FunOrString climbDescend = null, FunOrString modify = null)
         {
-            this.name = name;
+            this.Name = name;
             this.Description = description;
 
             if (activate != null)

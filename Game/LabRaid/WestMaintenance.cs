@@ -6,10 +6,6 @@ namespace lo_novo.LabRaid
 {
     public class WestMaintenance : Room
     {
-        public override string Name { get { return "Maintenance Cupboard (W)"; } }
-
-        public override string Description { get { return "TODO"; } }
-
         public class Wire : ConceptThing
         {
             public bool Cut = false;
@@ -21,7 +17,10 @@ namespace lo_novo.LabRaid
 
         public class Pliers : Thing
         {
-            public override string Name { get { return "pliers"; } }
+            public Pliers()
+            {
+                Name = "pliers";
+            }
         }
 
         public ConceptThing OxygenControls;
@@ -65,6 +64,8 @@ namespace lo_novo.LabRaid
 
         public WestMaintenance()
         {   
+            Name = "Maintenance Cupboard (W)";
+
             var t1 = new ConceptThing("low ceiling", "An exceedingly low ceiling, for such a spacious spacious-ship.");
             t1.Set(DefaultVerb.Push, "Raise the roof!");
             t1.Announce = false;
