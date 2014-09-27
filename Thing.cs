@@ -10,12 +10,6 @@ namespace lo_novo
     {
         public abstract string Name { get; }
         public string Preposition = "a";
-        private string description = null;
-        public string Description
-        {
-            get { return description ?? "Truly, a " + Name + " remarkable only in how unremarkable it is."; }
-            set { description = value; }
-        }
         private string inRoomDescription = null;
         public string InRoomDescription 
         { 
