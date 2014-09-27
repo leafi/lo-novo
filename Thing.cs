@@ -10,18 +10,9 @@ namespace lo_novo
     {
         public abstract string Name { get; }
         public string Preposition = "a";
-        private string quickDescription = null;
-        public string QuickDescription 
-        { 
-            get { return quickDescription; }
-            set { quickDescription = value; }
-        }
-        private string description = null;
-        public string Description
-        {
-            get { return description; }
-            set { description = value; }
-        }
+        public string QuickDescription = null;
+        public string Description = null;
+
         public List<string> AliasesRegex = new List<string>();
 
         public bool Heavy = true;

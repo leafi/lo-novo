@@ -106,8 +106,26 @@ namespace lo_novo
 
         public virtual string GetFullDescription()
         {
-            return string.Join("\n", new string[] { Name.ToUpper(), Description }
-                .Union(Contents.Where((t) => t.Announce).ToList().ConvertAll<string>((t) => t.QuickDescription)));
+            var lines = new List<string>();
+
+            lines.Add(Name.ToUpper());
+            lines.Add(Description);
+
+            var noQuickDesc = new List<string>();
+
+            foreach (var t in Contents)
+                if (t.Announce)
+                {
+                    if (t.QuickDescription != null)
+                        lines.Add(t.QuickDescription);
+                    else
+                        noQuickDesc.Add(t.ToString());
+                }
+
+            if (noQuickDesc.Count > 0)
+                lines.Add("Additionally, there's " + string.Join(", ", noQuickDesc) + ".");
+
+            return string.Join("\n", lines);
         }
 
         public virtual void Enter()
