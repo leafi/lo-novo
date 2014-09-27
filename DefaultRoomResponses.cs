@@ -22,7 +22,7 @@ namespace lo_novo
             }
             else if (i.ActiveNoun is Thing && room.Contents.Contains(i.ActiveNoun as Thing))
             {
-                State.o((i.ActiveNoun as Thing).FurtherInRoomDescription);
+                State.o((i.ActiveNoun as Thing).Description);
                 return true;
             }
             else if (i.ActiveNoun is Player)

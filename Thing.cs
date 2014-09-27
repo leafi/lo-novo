@@ -10,17 +10,17 @@ namespace lo_novo
     {
         public abstract string Name { get; }
         public string Preposition = "a";
-        private string inRoomDescription = null;
-        public string InRoomDescription 
+        private string quickDescription = null;
+        public string QuickDescription 
         { 
-            get { return inRoomDescription ?? "A " + Name + " lies on the floor."; }
-            set { inRoomDescription = value; }
+            get { return quickDescription; }
+            set { quickDescription = value; }
         }
-        private string furtherInRoomDescription = null;
-        public string FurtherInRoomDescription
+        private string description = null;
+        public string Description
         {
-            get { return furtherInRoomDescription ?? InRoomDescription; }
-            set { furtherInRoomDescription = value; }
+            get { return description; }
+            set { description = value; }
         }
         public List<string> AliasesRegex = new List<string>();
 
