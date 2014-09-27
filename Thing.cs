@@ -32,7 +32,7 @@ namespace lo_novo
         {
             if (i.DefaultVerb == DefaultVerb.Look)
             {
-                State.o(Description);
+                State.o(Description ?? "ENODESCRIPTION");
                 return true;
             }
 

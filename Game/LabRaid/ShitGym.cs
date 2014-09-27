@@ -15,11 +15,6 @@ namespace lo_novo.LabRaid
             get { throw new NotImplementedException(); }
         }
 
-        public override string ShortDescription
-        {
-            get { throw new NotImplementedException(); }
-        }
-
         public ShitGym()
         {
             AddExit(Direction.West, typeof(EastCorridorS), "corridor");

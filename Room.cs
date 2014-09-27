@@ -104,12 +104,18 @@ namespace lo_novo
             BuildParser();
         }
 
+        protected FunOrString Func(Func<Intention, bool> lambda) { return (FunOrString) lambda; }
+
         public virtual string GetFullDescription()
         {
             var lines = new List<string>();
 
             lines.Add(Name.ToUpper());
-            lines.Add(Description);
+            try {
+                lines.Add(Description);
+            } catch (NotImplementedException) {
+                lines.Add("ENODESCRIPTION");
+            }
 
             var noQuickDesc = new List<string>();
 
