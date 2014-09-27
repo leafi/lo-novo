@@ -78,7 +78,6 @@ namespace lo_novo
         public Thing Find(string name)
         {
             return Contents.Where<Thing>((t) => t.Name == name).Single();
-
         }
 
         public T Find<T>() where T : Thing
@@ -103,33 +102,6 @@ namespace lo_novo
         public Room()
         {
             BuildParser();
-        }
-        
-        /// <summary>
-        /// Announcement made to all players, irrespective of who triggered the command.
-        /// </summary>
-        /// <param name="output">Text to announce to all players</param>
-        public void ann(string output)
-        {
-            State.AllIRC.Send(output);
-        }
-
-        /// <summary>
-        /// Addresses the player who triggered this command, but publicly.
-        /// </summary>
-        /// <param name="output">Text to display (publicly!) to the player who triggered this command</param>
-        public void o(string output)
-        {
-            State.Player.IRC.Send(output);
-        }
-
-        /// <summary>
-        /// Addresses the player who triggered this command, privately.
-        /// </summary>
-        /// <param name="output">Text to whisper to the player who triggered this command</param>
-        public void whis(string output)
-        {
-            State.Player.IRC.Send(output, true);
         }
 
         public virtual string GetFullDescription()
