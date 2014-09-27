@@ -8,13 +8,7 @@ namespace lo_novo.LabRaid
     {
         public override string Name { get { return "Maintenance Cupboard (W)"; } }
 
-        public override string Description
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
-        }
+        public override string Description { get { return "TODO"; } }
 
         public class Wire : ConceptThing
         {
@@ -30,6 +24,45 @@ namespace lo_novo.LabRaid
             public override string Name { get { return "pliers"; } }
         }
 
+        public ConceptThing OxygenControls;
+
+        private bool twistOxygenDial(Intention i)
+        {
+            if (LabRaidState.Oxygen > 0) // gets stuck OFF
+            {
+                // Oxygen % ALWAYS lowers.
+                // Need some custom actions/custom Thing code so if they try and turn it back we acknowledge this...??? Yeah! "too late..."
+
+                State.o("You twist the crusty dial, and the oxygen level lowers.");
+
+                if (LabRaidState.Oxygen == 100)
+                {
+                    //State.Ticking.Add(new SimpleTick(() => {
+                    // BEGIN DEATH TIMER.
+
+                    //}));
+                }
+
+                LabRaidState.Oxygen -= (State.RNG.Next() > 0.5 ? 20 : 30);
+                LabRaidState.Oxygen = (LabRaidState.Oxygen < 0 ? 0 : LabRaidState.Oxygen);
+
+                if (LabRaidState.Oxygen < 20)
+                { /* .. */
+                }
+                else if (LabRaidState.Oxygen < 50)
+                { /* .. */
+                }
+                else if (LabRaidState.Oxygen < 81)
+                { /* .. */
+                }
+            }
+            else
+                State.o("No good. It's firmly stuck at 0%.\nIs it just me, or is it a bit stuffy in here?");
+            // TODO: UPDATE OBJECT DESC BASED ON OXY %. And possibly a bunch of responses when it gets desperate.
+
+            return true;
+        }
+
         public WestMaintenance()
         {   
             var t1 = new ConceptThing("low ceiling", "An exceedingly low ceiling, for such a spacious spacious-ship.");
@@ -37,60 +70,23 @@ namespace lo_novo.LabRaid
             t1.Announce = false;
             Contents.Add(t1);
 
-            var oxy = new ConceptThing("oxygen supply control", 
-                          @"This looks like it controls the oxygen supply for the entire ship! It's currently at 100%.
-The dial seems far too tempting.", 
-                          take: "You'd take away all oxygen on ship?! You monster!", // or "That's just greedy." <- mebbeh too confusing tho
-                          activate: Func((i) => {
-                    // Is this a turny dial? 0% to 100%? can space age tech really boil down to JUST THIS (maybe it can) < definitely. and make it get stuck, not even a good turny dial.
-                    // hahahaahahha!!!!!!!! yes. i agree.
-                    // adding int field 0..100 .Oxygen  to static class LabRaidState         public static int Oxygen = 100;
-                    if (LabRaidState.Oxygen > 0) // gets stuck OFF
-                    {
-                        // Oxygen % ALWAYS lowers.
-                        // Need some custom actions/custom Thing code so if they try and turn it back we acknowledge this...??? Yeah! "too late..."
-
-                        State.o("You twist the crusty dial, and the oxygen level lowers.");
-
-                        if (LabRaidState.Oxygen == 100)
-                        {
-                            //State.Ticking.Add(new SimpleTick(() => {
-                            // BEGIN DEATH TIMER.
-                                
-                            //}));
-                        }
-                        
-                        LabRaidState.Oxygen -= (State.RNG.Next() > 0.5 ? 20 : 30);
-                        LabRaidState.Oxygen = (LabRaidState.Oxygen < 0 ? 0 : LabRaidState.Oxygen);
-
-                        if (LabRaidState.Oxygen < 20)
-                        { /* .. */
-                        }
-                        else if (LabRaidState.Oxygen < 50)
-                        { /* .. */
-                        }
-                        else if (LabRaidState.Oxygen < 81)
-                        { /* .. */
-                        }
-                    }
-                    else
-                        State.o("No good. It's firmly stuck at 0%.\nIs it just me, or is it a bit stuffy in here?");
-                    // TODO: UPDATE OBJECT DESC BASED ON OXY %. And possibly a bunch of responses when it gets desperate.
-
-                    return true;
-                }),
-                          pushPull: "It's a turny knob, not a pushy-pulley.",
-                          talk: "I talk to the wind. But the wind cannot hear...",
-                          punt: "That's a worrying noise..." // hahaha!
-                      );
-            Contents.Add(oxy);
+            OxygenControls = new ConceptThing("oxygen supply control", 
+                @"This looks like it controls the oxygen supply for the entire ship! It's currently at 100%.
+                The dial seems far too tempting.", 
+                take: "You'd take away all oxygen on ship?! You monster!", // or "That's just greedy." <- mebbeh too confusing tho
+                activate: twistOxygenDial,
+                modify: twistOxygenDial,
+                pushPull: "It's a turny knob, not a pushy-pulley.",
+                talk: "I talk to the wind. But the wind cannot hear...",
+                punt: "That's a worrying noise..." // hahaha!
+            );
+            Contents.Add(OxygenControls);
 
             // NOT added unless party fucks up the cables
             var fireAdded = false;
             var fire = new ConceptThing("small but growing fire",
                            @"A worrying fire near the power controls. Is this what they call an electrical fire?
 It's spreading slowly towards the safe."
-            // STUFF HERE
                        );
 
 
