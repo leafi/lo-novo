@@ -19,14 +19,6 @@ Your room is a mess, but the ancient and terrible dance of the universe continue
             }
         }
 
-        public override string ShortDescription
-        {
-            get
-            {
-                return @"Your room. Messy, but the view makes up for it.";
-            }
-        }
-
         #endregion
 
         public BedRoom()

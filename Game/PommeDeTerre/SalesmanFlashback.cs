@@ -47,16 +47,6 @@ So many SALESMEN, yet you're the only ones there. At risk of belabouring the poi
             }
         }
 
-        public override string ShortDescription
-        {
-            get
-            {
-                return @"The emporium. You're in it.
-It smells of desperation, and of sacrificing anything for a quick buck.
-Like a novelty Toblerone.";
-            }
-        }
-
         public SalesmanFlashbackRoom()
         {
         }

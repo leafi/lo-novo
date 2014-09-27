@@ -16,14 +16,6 @@ namespace lo_novo.LabRaid
             }
         }
 
-        public override string ShortDescription
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
-        }
-
         #endregion
 
         public Landing1()

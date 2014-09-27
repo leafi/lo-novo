@@ -40,27 +40,6 @@ Well, the salesman was right about one thing - it was cheap.";
             }
         }
 
-        public override string ShortDescription
-        {
-            get
-            {
-                switch (RoomState)
-                {
-                    case StateEnum.AInit:
-                        return "Lit by a dim red hue, stretching out before you - but not much - is the control room of the Pomme de Terre, or Apple of the Earth.";
-
-                    case StateEnum.BConversation:
-                        return "dunno yet";
-
-                    case StateEnum.CExplore:
-                        return "dunno yet";
-                }
-                //return @"The control room of the ship. Not much going on here, 
-
-                throw new NotImplementedException();
-            }
-        }
-
         public void Transition(StateEnum next)
         {
             if ((RoomState == StateEnum.AInit && next != StateEnum.BConversation)

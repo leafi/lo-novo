@@ -15,7 +15,7 @@ namespace lo_novo
         {
             if (i.WholeRoom)
             {
-                room.Describe(false, true);
+                State.o(room.GetFullDescription());
                 if (i.PassiveNoun != null)
                     State.o("You didn't find " + i.PassiveNoun.ToString() + " particularly helpful.");
                 return true;

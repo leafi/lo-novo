@@ -11,7 +11,6 @@ namespace lo_novo
         public bool Unvisited = true;
         public abstract string Name { get; }
         public abstract string Description { get; }
-        public abstract string ShortDescription { get; }
         public virtual string[] Tags { get { return new string[] { }; } }
         public List<Thing> Contents = new List<Thing>();
         public Dictionary<Thing, string> DescriptionForContent = new Dictionary<Thing, string>();
@@ -133,23 +132,10 @@ namespace lo_novo
             State.Player.IRC.Send(output, true);
         }
 
-        public virtual void Describe(bool toAll = false, bool longDesc = true)
+        public virtual string GetFullDescription()
         {
-            Action<string> d = ((s) => { if (toAll) ann(s); else o(s); });
-
-            d(Name.ToUpper());
-            try {
-                d(longDesc ? Description : ShortDescription);
-            } catch (NotImplementedException) {
-                d("Description/ShortDescription: NOTIMPLEMENTEDEXCEPTION");
-            }
-            foreach (var t in Contents)
-                if (t.Important)
-                    d(t.InRoomDescription);
-            if (Exits.Count > 0)
-            {
-                d("Exits lie to the " + string.Join(", ", ExitCanonicalNames) + ".");
-            }
+            return string.Join("\n", new string[] { Name.ToUpper(), Description }
+                .Union(Contents.Where((t) => t.Important).ToList().ConvertAll<string>((t) => t.InRoomDescription)));
         }
 
         public virtual void Enter()
@@ -159,7 +145,7 @@ namespace lo_novo
 
             if (timeToNextDescribeOnEntry <= 0.0)
             {
-                Describe(true, Unvisited);
+                State.o(GetFullDescription());
             }
             else if (!State.TravellingAll)
                 State.o("-> " + Name);
