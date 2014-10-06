@@ -8,6 +8,8 @@ namespace lo_novo.LabRaid
         {
             Name = "Maintenance Cupboard (E)";
 
+
+
             AddExit(Direction.West, typeof(EastCorridorN), "corridor");
         }
     }

@@ -63,11 +63,7 @@
     <Compile Include="Parser\NounLibrary.cs" />
     <Compile Include="Parser\InventoryParser.cs" />
     <Compile Include="Parser\INoun.cs" />
-    <Compile Include="DefaultRoomResponses.cs" />
-    <Compile Include="DefaultInventoryResponses.cs" />
-    <Compile Include="WordDictionary.cs" />
     <Compile Include="Extensions.cs" />
-    <Compile Include="SingleOrMultiPlayer.cs" />
     <Compile Include="Game\PommeDeTerre\ControlRoom.cs" />
     <Compile Include="Game\PommeDeTerre\EmergencyLights.cs" />
     <Compile Include="Conversation.cs" />
@@ -98,6 +94,9 @@
     <Compile Include="Game\LabRaid\Landing2.cs" />
     <Compile Include="FunOrString.cs" />
     <Compile Include="Parser\IHandleDispatch.cs" />
+    <Compile Include="DefaultInventoryResponses.cs" />
+    <Compile Include="WordDictionary.cs" />
+    <Compile Include="DefaultRoomResponses.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

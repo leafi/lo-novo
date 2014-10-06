@@ -115,12 +115,6 @@ namespace lo_novo
                 if (!AllSharedRooms.ContainsKey(roomClass))
                     AllSharedRooms.Add(roomClass, (Room) roomClass.GetConstructor(new Type[] { }).Invoke(null));
 
-                if (AllSharedRooms[roomClass].GetType()
-                    .GetCustomAttributes(typeof(SinglePlayerAttribute), true).FirstOrDefault() != null)
-                {
-                    State.SystemMessage(roomClass.Name + " isn't designed for multiple players. Change instanced arg in Travel() to true.");
-                }
-               
                 Travel(AllSharedRooms[roomClass]);
             }
             else

@@ -158,13 +158,9 @@ namespace lo_novo
 
                             if (roomType != null)
                             {
-                                bool sp = roomType.GetCustomAttributes(typeof(SinglePlayerAttribute), true).Any();
-                                if (sp)
-                                    State.SystemMessage("(Single player room. Instancing.)");
-
                                 try
                                 {
-                                    State.Travel(roomType, sp);
+                                    State.Travel(roomType);
                                 }
                                 catch (Exception e)
                                 {

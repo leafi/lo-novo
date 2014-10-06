@@ -2,7 +2,6 @@
 
 namespace lo_novo.PommeDeTerre
 {
-    [SinglePlayer]
     public class BedRoom : Room
     {
         public BedRoom()
