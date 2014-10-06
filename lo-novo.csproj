@@ -66,7 +66,6 @@
     <Compile Include="DefaultRoomResponses.cs" />
     <Compile Include="DefaultInventoryResponses.cs" />
     <Compile Include="WordDictionary.cs" />
-    <Compile Include="ConceptThing.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="SingleOrMultiPlayer.cs" />
     <Compile Include="Game\PommeDeTerre\ControlRoom.cs" />

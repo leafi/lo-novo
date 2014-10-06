@@ -6,7 +6,7 @@ namespace lo_novo.LabRaid
 {
     public class WestMaintenance : Room
     {
-        public class Wire : ConceptThing
+        public class Wire : Thing
         {
             public bool Cut = false;
 
@@ -23,7 +23,7 @@ namespace lo_novo.LabRaid
             }
         }
 
-        public ConceptThing OxygenControls;
+        public Thing OxygenControls;
 
         private bool twistOxygenDial(Intention i)
         {
@@ -66,12 +66,12 @@ namespace lo_novo.LabRaid
         {   
             Name = "Maintenance Cupboard (W)";
 
-            var t1 = new ConceptThing("low ceiling", "An exceedingly low ceiling, for such a spacious spacious-ship.");
+            var t1 = new Thing("low ceiling", "An exceedingly low ceiling, for such a spacious spacious-ship.");
             t1.Set(DefaultVerb.Push, "Raise the roof!");
             t1.Announce = false;
             Contents.Add(t1);
 
-            OxygenControls = new ConceptThing("oxygen supply control", 
+            OxygenControls = new Thing("oxygen supply control", 
                 @"This looks like it controls the oxygen supply for the entire ship! It's currently at 100%.
                 The dial seems far too tempting.", 
                 take: "You'd take away all oxygen on ship?! You monster!", // or "That's just greedy." <- mebbeh too confusing tho
@@ -85,7 +85,7 @@ namespace lo_novo.LabRaid
 
             // NOT added unless party fucks up the cables
             var fireAdded = false;
-            var fire = new ConceptThing("small but growing fire",
+            var fire = new Thing("small but growing fire",
                            @"A worrying fire near the power controls. Is this what they call an electrical fire?
 It's spreading slowly towards the safe."
                        );
@@ -98,7 +98,7 @@ It's spreading slowly towards the safe."
             var burgundyWire = new Wire("burgundy");
             Contents.AddRange(new Wire[] { redWire, blueWire, purpleWire, mauveWire, burgundyWire });
 
-            var cables = new ConceptThing("electricity cables",
+            var cables = new Thing("electricity cables",
                              @"Wires, frayed and rusted, run from the ceiling to the floor. Red, blue, purple and mauve.
 What's a humble space explorer to do?",
                              take: @"Yeah, of course, take the LIVE WIRES. That'll end well.
@@ -227,11 +227,11 @@ A series of clanks and gutteral noises demonstrate the system's reinvigoration, 
 
             // when you have code for managing Things, everything looks like a Thing. likewise for lambdas...
 
-            Contents.Add(new ConceptThing("extremely useful looking safe" // but it's LOCKED! OMGZ.
+            Contents.Add(new Thing("extremely useful looking safe" // but it's LOCKED! OMGZ.
             ));
 
 
-            Contents.Add(new ConceptThing("humour gas controls" // haha
+            Contents.Add(new Thing("humour gas controls" // haha
             ));
             AddExit(Direction.East, typeof(WestCorridorS), "corridor");
         }
