@@ -6,50 +6,47 @@ using System.Threading.Tasks;
 
 namespace lo_novo
 {
-    public struct PlayerTraits
+    public enum Traits
     {
-        public int Level;
-        public int LevelUpAvailable;
-
         // physical
-        public int MainStrength;
-        public int MainDexterity;
-        public int MainCharisma;
-        public int MainIntelligence;
-        public int MainSpeed;
+        MainStrength,
+        MainDexterity,
+        MainCharisma,
+        MainIntelligence,
+        MainSpeed,
 
         // weapon skill
-        public int WeaponBlade; // SPD cap
-        public int WeaponBlaster; // DEX cap
-        public int WeaponBlunt; // STR cap
-        public int WeaponWrestling; // STR cap
+        WeaponBlade, // SPD cap
+        WeaponBlaster, // DEX cap
+        WeaponBlunt, // STR cap
+        WeaponWrestling, // STR cap
 
         // thinking skillz
-        public int SkillBio; // INT cap
-        public int SkillEvade; // Max(DEX, SPD) cap
-        public int SkillPunt; // DEX
-        public int SkillDefend; // STR cap
-        public int SkillObservant; // Max(INT, SPD) cap
-        public int SkillLore; // INT cap
-        public int SkillDeduction; // INT cap
-        public int SkillCharm; // CHA cap
-        public int SkillIntimidate; // Min(STR, CHA) cap
-        public int SkillPersuasion; // Min(INT, CHA) cap
-        public int SkillRepair; // Max(DEX, INT)
-        public int SkillWeaponize; // Max(CHA, INT)
+        SkillBio, // INT cap
+        SkillEvade, // Max(DEX, SPD) cap
+        SkillPunt, // DEX
+        SkillDefend, // STR cap
+        SkillObservant, // Max(INT, SPD) cap
+        SkillLore, // INT cap
+        SkillDeduction, // INT cap
+        SkillCharm, // CHA cap
+        SkillIntimidate, // Min(STR, CHA) cap
+        SkillPersuasion, // Min(INT, CHA) cap
+        SkillRepair, // Max(DEX, INT)
+        SkillWeaponize, // Max(CHA, INT)
 
         // secret, magic attributes
-        public int MagicTenacity;
-        public int MagicPower;
-        public int MagicControl;
-        public int MagicLuck;
-        public int MagicTaint;
+        MagicTenacity,
+        MagicPower,
+        MagicControl,
+        MagicLuck,
+        MagicTaint,
 
         // personality tracking
-        public int PersonalityHonest;
-        public int PersonalityAnnoying;
-        public int PersonalityAmenable;
-        public int PersonalityReckless;
+        PersonalityHonest,
+        PersonalityAnnoying,
+        PersonalityAmenable,
+        PersonalityReckless
     }
 
     public class Player : INoun
@@ -61,7 +58,10 @@ namespace lo_novo
         public List<Thing> Inventory = new List<Thing>();
         public DefaultInventoryResponses DefaultInventoryResponses;
 
-        public PlayerTraits Traits;
+        public int Level;
+        public int LevelUpAvailable;
+        public Dictionary<Traits, int> Traits;
+
         public string Appearance;
 
         public void Tick() { }

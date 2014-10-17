@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Text.RegularExpressions;
+using lo_novo.Damage;
 
 namespace lo_novo
 {
@@ -10,6 +11,9 @@ namespace lo_novo
         public int Violence = 1;
         public int Airborne = 1;
         public int Whimsy = 1;
+
+        // meta
+        public AttackType AttackType = AttackType.None;
 
         public DefaultVerb DefaultVerb = DefaultVerb.DontKnow;
         public string VerbString = "";

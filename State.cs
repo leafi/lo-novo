@@ -35,6 +35,68 @@ namespace lo_novo
 
         internal static bool TravellingAll = false;
 
+        /// <summary>
+        /// RETURNS -1 FOR CRITICAL FAIL
+        /// </summary>
+        public static int d20(Traits trait, int target = -1)
+        {
+            // http://rpg.stackexchange.com/questions/15971/is-it-possible-to-produce-a-bowl-shaped-probability-curve-with-dice-rolls
+            // CodexArcanum's answer (3rd one down), Exact Odds of N on Xd20 Take Lowest
+            // using 3d20 version. crit fail is if final result is 7.
+
+            if (Player.Traits[trait] < 0)
+                return 0;
+
+            // 3d20, take lowest
+            var d1 = RNG.Next(20) + 1;
+            var d2 = RNG.Next(20) + 1;
+            var d3 = RNG.Next(20) + 1;
+
+            var least = ((d1 < d2) ? d1 : d2);
+            if (d3 < least)
+                least = d3;
+
+            var adjusted = least + Player.Traits[trait];
+
+            // announce result
+            var s = string.Format("(Roll dice. 3d20 -> {0} {1} {2}. Take least, {3}.", d1, d2, d3, least);
+            if (least == 7)
+                s += " 7 => CRITICAL FAIL.";
+            else
+            {
+                s += string.Format(" +{0}({1}) -> {2}", trait, Player.Traits[trait], adjusted);
+                if (target != -1)
+                    s += "vs " + target + ((adjusted >= target) ? " => Success." : " => Fail.");
+            }
+            s += ")";
+
+            State.o(s);
+
+            return adjusted == 7 ? -1 : adjusted;
+        }
+
+        /// <summary>
+        /// RETURNS -1 FOR CRITICAL FAIL
+        /// </summary>
+        public static int d20Hidden(Traits trait)
+        {
+            if (Player.Traits[trait] < 0)
+                return 0;
+
+            // 3d20, take lowest (see d20 function)
+            var d1 = RNG.Next(20) + 1;
+            var d2 = RNG.Next(20) + 1;
+            var d3 = RNG.Next(20) + 1;
+
+            var least = ((d1 < d2) ? d1 : d2);
+            if (d3 < least)
+                least = d3;
+
+            var adjusted = least + Player.Traits[trait];
+
+            return adjusted == 7 ? -1 : adjusted;
+        }
+
         public static string Choose(IEnumerable<string> choices)
         {
             return choices.ElementAt(RNG.Next(choices.Count()));
