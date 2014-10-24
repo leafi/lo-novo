@@ -14,12 +14,17 @@ namespace lo_novo.Damage
             }
 
             AttackType valid = mdl.GetValidAttacks();
+
+            // intersection of desired attacks & valid attacks
             AttackType atav = i.AttackType & valid;
+
             var trait = State.Player.Traits;
 
+            // intersection non-empty?
             if (atav != AttackType.None)
                 State.o("You " + i.VerbString + " " + i.ActiveNoun.ToString() + ".");
 
+            // ...or must we rewrite the move?
             if (atav == AttackType.None)
             {
                 var s = new List<string>();
@@ -41,45 +46,26 @@ namespace lo_novo.Damage
 
                     AttackType good = (AttackType) Enum.Parse(typeof(AttackType), valid.ToString());
 
-                    var crit = false;
-
-                    var obsRoll = State.d20(Traits.SkillObservant, 5);
-                    if (obsRoll >= 5)
+                    if (State.d20(Traits.SkillObservant, 5) >= 5)
                     {
                         State.o("You decide instead to " + good.ToString() + ".");
                         atav = good;
                     }
                     else
                     {
-                        if (obsRoll == -1)
-                            crit = true;
-
-                        var tenaRoll = State.d20Hidden(Traits.MagicTenacity);
-                        if (tenaRoll >= 10)
+                        if (State.d20Hidden(Traits.MagicTenacity) >= 10)
                         {
                             State.o("You " + valid.ToString() + " instead.");
                             atav = good;
                         }
                         else
                         {
-                            if (tenaRoll == -1)
-                                crit = true;
-
-                            var luckRoll = State.d20Hidden(Traits.MagicLuck);
-                            if (luckRoll >= 10)
+                            if (State.d20Hidden(Traits.MagicLuck) >= 10)
                             {
                                 State.o("You find yourself " + good + "ing instead.");
                                 atav = good;
                             }
-                            else if (luckRoll == -1)
-                                crit = true;
                         }
-                    }
-
-                    if (crit)
-                    {
-                        State.o("You hurt yourself in your confusion! (TODO)");
-                        return;
                     }
                 }
             }

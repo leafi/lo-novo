@@ -36,7 +36,7 @@ namespace lo_novo
         internal static bool TravellingAll = false;
 
         /// <summary>
-        /// RETURNS -1 FOR CRITICAL FAIL
+        /// Rolls d20 with skill adjustment. Announces roll to channel.
         /// </summary>
         public static int d20(Traits trait, int target = -1)
         {
@@ -59,24 +59,19 @@ namespace lo_novo
             var adjusted = least + Player.Traits[trait];
 
             // announce result
-            var s = string.Format("(Roll dice. 3d20 -> {0} {1} {2}. Take least, {3}.", d1, d2, d3, least);
-            if (least == 7)
-                s += " 7 => CRITICAL FAIL.";
-            else
-            {
-                s += string.Format(" +{0}({1}) -> {2}", trait, Player.Traits[trait], adjusted);
-                if (target != -1)
-                    s += "vs " + target + ((adjusted >= target) ? " => Success." : " => Fail.");
-            }
+            var s = string.Format("(Roll({4}): 3d20 -> {0} {1} {2}. Take least, {3}.", d1, d2, d3, least, trait);
+            s += string.Format(" +{0}({1}) -> {2}", trait, Player.Traits[trait], adjusted);
+            if (target != -1)
+                s += "vs " + target + ((adjusted >= target) ? " => Success." : " => Fail.");
             s += ")";
 
             State.o(s);
 
-            return adjusted == 7 ? -1 : adjusted;
+            return adjusted;
         }
-
+            
         /// <summary>
-        /// RETURNS -1 FOR CRITICAL FAIL
+        /// Rolls d20 with skill adjustment, NOT announcing the roll or result at all.
         /// </summary>
         public static int d20Hidden(Traits trait)
         {
@@ -94,7 +89,7 @@ namespace lo_novo
 
             var adjusted = least + Player.Traits[trait];
 
-            return adjusted == 7 ? -1 : adjusted;
+            return adjusted;
         }
 
         public static string Choose(IEnumerable<string> choices)
